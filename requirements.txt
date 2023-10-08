@@ -1,0 +1,62 @@
+ SCREENS & Componenents NEEDED:
+ 
+ USER: 
+ 
+    1) Login Screen:
+    2) Home Screen
+        a. navbar
+        b. account statistics
+        c. text input
+        d. view all posts in feeds
+    3) My Posts Screen
+        a. View a Post
+        b. View Comments
+    4) View Post Screen
+        a. View a Post
+        b. View Comments
+    5) Settings Screen
+    6) Profile Screen
+    7) Help Screen
+        a. Text input
+    8) Footer
+
+
+    ADMIN: 
+ 
+    1) Login Screen:
+    2) Home Screen
+        a. navbar
+        b. account statistics
+        c. text input
+        d. view all posts in feeds
+    3) My ANNOUNCEMENT Screen
+        a. View announcement
+        b. View Comments
+    4) View Post Screen
+        a. View a Post
+        b. View Comments
+    5) Settings Screen
+    6) Profile Screen
+    7) View Accounts
+        a. User names and Award luddies 
+    8) Footer
+
+
+    DATABASE:
+
+    Users Collection:
+      uid:
+        1) name
+        2) email
+        3) luddies
+        4) totalPosts
+        5) totalComments
+        6) role
+        7) profilePic
+
+    Posts Collection:
+      uid:
+        1) postId
+        2) postContent
+        3) comments object
+        4) upvotes
