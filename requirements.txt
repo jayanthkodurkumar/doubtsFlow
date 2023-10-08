@@ -1,5 +1,7 @@
- SCREENS & Componenents NEEDED:
+SCREENS & Componenents NEEDED:
  
+ SPLASH SCREEN
+
  USER: 
  
     1) Login Screen:
@@ -20,7 +22,7 @@
         a. Text input
     8) Footer
 
-
+# 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
     ADMIN: 
  
     1) Login Screen:
