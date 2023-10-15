@@ -47,8 +47,9 @@ const LoginScreen = () => {
         email: userEmail,
         name: userName,
         luddies: 0,
-        totalPosts: 0,
+        totalDoubts: 0,
         totalComments: 0,
+        isPremium: false,
       });
       console.log("Account successfully created!!!");
     }
