@@ -75,7 +75,7 @@ const Doubts = ({ home, viewDoubt }) => {
           </View>
 
           <Pressable style={homestyles.readmore}>
-            <Text style={homestyles.readmoreText}>Read more...</Text>
+            <Text style={homestyles.readmoreText}>Read more</Text>
           </Pressable>
         </View>
       </ScrollView>
