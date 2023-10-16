@@ -1,11 +1,17 @@
 import { Pressable, StyleSheet, TextInput, View } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { auth, db } from "../firebase";
 import { addDoc, collection, updateDoc } from "firebase/firestore";
+import { useSelector } from "react-redux";
 
 const TextBox = ({ post, help }) => {
+  const userDetails = useSelector((state) => state.auth.user);
+  // useEffect(() => {
+  //   console.log("user from store" + JSON.stringify(userDetails));
+  // }, []);
+
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
   const textInputRef = useRef();
@@ -25,10 +31,10 @@ const TextBox = ({ post, help }) => {
 
     try {
       const doubtsRef = await addDoc(collection(db, "doubts"), {
-        userId: "dKe9twF3HKX9lKvu6I3RZkuzKCz1",
+        userId: userDetails.userId,
         title: title,
         datePosted: formattedDate,
-        name: "Jayanth",
+        name: userDetails.name,
         doubt: text,
         downvotes: 0,
         upvotes: 0,

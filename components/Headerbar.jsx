@@ -1,8 +1,11 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { useSelector } from "react-redux";
 
 const Headerbar = () => {
+  const userDetails = useSelector((state) => state.auth.user);
+  console.log("header user" + userDetails);
   return (
     <View style={styles.headerContainer}>
       <View style={styles.leftContainer}>
@@ -19,7 +22,7 @@ const Headerbar = () => {
           <Image
             style={styles.profilePic}
             source={{
-              uri: "https://media.npr.org/assets/img/2023/06/07/ap23158571300352-8bf00455d3333eb01468ea9493463a56833a8c99-s1100-c50.jpg",
+              uri: userDetails.profilePic,
             }}
           />
         </Pressable>

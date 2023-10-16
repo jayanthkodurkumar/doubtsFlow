@@ -13,10 +13,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import HomeScreen from "./HomeScreen";
 import { SocialIcon } from "react-native-elements";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../redux/reducers/authReducer";
 
 WebBrowser.maybeCompleteAuthSession();
 const LoginScreen = () => {
+  const dispatch = useDispatch();
+
   const [userInfo, setUserInfo] = useState();
+
   const [request, response, promptAsync] = Google.useAuthRequest({
     iosClientId:
       "839036897753-os8gnu9uia7fsope321lqrpsf38gcup3.apps.googleusercontent.com",
@@ -59,6 +64,7 @@ const LoginScreen = () => {
     if (response?.type == "success") {
       const { id_token } = response.params;
       const credential = GoogleAuthProvider.credential(id_token);
+
       signInWithCredential(auth, credential);
     }
   }, [response]);
@@ -71,6 +77,18 @@ const LoginScreen = () => {
         setUserInfo(user);
         await createUser(user.uid, user.email, user.photoURL, user.displayName);
         await AsyncStorage.setItem("@user", JSON.stringify(user));
+        console.log(user);
+        let userData = {};
+        console.log("before dispatch" + JSON.stringify(userData));
+        userData = {
+          userId: user.uid,
+          name: user.displayName,
+          email: user.email,
+          profilePic: user.photoURL,
+        };
+        // this will trigger the login action inside our authReducer with payload userdata as argument
+        dispatch(login(userData));
+        console.log("after Dispatch" + JSON.stringify(userData));
       } else {
         console.log("User is not authenticated");
       }

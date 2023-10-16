@@ -11,10 +11,14 @@ import Headerbar from "../components/Headerbar";
 import TextBox from "../components/TextBox";
 import Doubts from "../components/Doubts";
 import { collection, getDocs } from "firebase/firestore";
+import { useSelector } from "react-redux";
 
 const HomeScreen = ({ promptAsync }) => {
   const navigation = useNavigation();
-
+  const user = useSelector((state) => state.auth.user);
+  useEffect(() => {
+    console.log("user from store" + JSON.stringify(user));
+  }, []);
   // TODO: useEffect to fetch data from doubts collection whenever doubtsArray changes
   const [doubtsArray, setDoubtsArray] = useState([]);
   useEffect(() => {

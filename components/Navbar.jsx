@@ -1,16 +1,42 @@
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { useNavigation } from "@react-navigation/native";
 
 const Navbar = ({ homeIcon, helpIcon, settingsIcon }) => {
+  const navigate = useNavigation();
   const HomeIcon = () => {
-    return <Icon style={styles.icon} name="home" size={40} color="black" />;
+    return (
+      <Pressable
+        onPress={() => {
+          navigate.replace("Home");
+        }}
+      >
+        <Icon style={styles.icon} name="home" size={40} color="black" />
+      </Pressable>
+    );
   };
   const HelpIcon = () => {
-    return <Icon style={styles.icon} name="headset" size={40} color="black" />;
+    return (
+      <Pressable
+        onPress={() => {
+          navigate.replace("Help");
+        }}
+      >
+        <Icon style={styles.icon} name="headset" size={40} color="black" />;
+      </Pressable>
+    );
   };
   const SettingsIcon = () => {
-    return <Icon style={styles.icon} name="cog" size={40} color="black" />;
+    return (
+      <Pressable
+        onPress={() => {
+          navigate.replace("Settings");
+        }}
+      >
+        <Icon style={styles.icon} name="cog" size={40} color="black" />
+      </Pressable>
+    );
   };
   return (
     <View style={styles.navbarContainer}>
