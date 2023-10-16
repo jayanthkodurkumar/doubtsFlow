@@ -13,6 +13,7 @@
     "@react-native-google-signin/google-signin": "^10.0.1",
     "@react-navigation/native": "^6.1.8",
     "@react-navigation/native-stack": "^6.9.14",
+    "@reduxjs/toolkit": "^1.9.7",
     "expo": "~49.0.13",
     "expo-application": "^5.4.0",
     "expo-auth-session": "^5.2.0",

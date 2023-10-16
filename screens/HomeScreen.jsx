@@ -1,44 +1,51 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { signOut } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Navbar from "../components/Navbar";
 import Headerbar from "../components/Headerbar";
 
-import { Camera, CameraType } from "expo-camera";
-import * as MediaLibrary from "expo-media-library";
 import TextBox from "../components/TextBox";
 import Doubts from "../components/Doubts";
+import { collection, getDocs } from "firebase/firestore";
 
 const HomeScreen = ({ promptAsync }) => {
   const navigation = useNavigation();
 
-  const [hasCameraPermission, setHasCameraPermission] = useState(null);
-  const [image, setImage] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
-  const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
-  const cameraRef = useRef(null);
-
+  // TODO: useEffect to fetch data from doubts collection whenever doubtsArray changes
+  const [doubtsArray, setDoubtsArray] = useState([]);
   useEffect(() => {
-    async () => {
-      MediaLibrary.requestPermissionsAsync();
-      const cameraStatus = await Camera.requestCameraPermissionsAsync();
-      setHasCameraPermission(cameraStatus.status === "granted");
+    const fetchDoubts = async () => {
+      const doubtsRef = collection(db, "doubts");
+
+      const snapshot = await getDocs(doubtsRef);
+      const data = [];
+      snapshot.forEach((doc) => {
+        data.push(doc.data());
+      });
+      setDoubtsArray(data);
+      return data;
     };
-  }, []);
+    fetchDoubts();
+  }, [doubtsArray]);
 
   return (
     <SafeAreaView style={styles.homeScreenContainer}>
       <View style={styles.headerContainer}>
         <Headerbar />
       </View>
-      <View style={styles.bodyContainer}>
-        <TextBox />
-        <Doubts home={true} />
-        {/* <Pressable
+      <ScrollView style={styles.bodyContainer}>
+        <TextBox post={true} />
+        <View style={styles.doubtsContainer}>
+          {doubtsArray.map((value, index) => (
+            <Doubts key={index} home={true} doubt={value} />
+          ))}
+        </View>
+
+        <Pressable
           onPress={() => {
             // Sign out the user from Firebase
             try {
@@ -52,15 +59,8 @@ const HomeScreen = ({ promptAsync }) => {
           }}
         >
           <Text>Sign Out</Text>
-        </Pressable> */}
-
-        <Camera
-          style={styles.camera}
-          type={type}
-          flashMode={flash}
-          ref={cameraRef}
-        />
-      </View>
+        </Pressable>
+      </ScrollView>
       <View style={styles.navbarContainer}>
         <Navbar homeIcon={true} helpIcon={true} settingsIcon={true} />
       </View>
@@ -81,10 +81,12 @@ const styles = StyleSheet.create({
   bodyContainer: {
     flex: 0.92,
   },
+
+  doubtsContainer: {
+    flex: 0.83,
+  },
   navbarContainer: {
     flex: 0.08,
-    // borderWidth: 4,
-    // borderColor: "black",
     alignItems: "stretch",
     justifyContent: "center",
     backgroundColor: "#EFEFEF",

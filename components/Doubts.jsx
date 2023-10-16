@@ -1,87 +1,98 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import React from "react";
 
-const Doubts = ({ home, viewDoubt }) => {
-  let doubts = {
-    1: {
-      doubtid: 1,
-      title: "title 1",
-      datePosted: 19 / 15 / 2023,
-      commentsCollection: {
-        10: {
-          commentid: 10,
-          name: "John Doe",
-          isCorrect: true,
-          upvotes: 1,
-          downvotes: 3,
-          comment: "comment 1",
-        },
-      },
-      doubt: "this is a doubt",
-      downvotes: 3,
-      upvotes: 3,
-      totalComments: 10,
-    },
-    2: {
-      doubtid: 2,
-      title: "title 2",
-      datePosted: 19 / 15 / 2023,
-      commentsCollection: {
-        20: {
-          commentid: 20,
-          name: "John Doe",
-          isCorrect: true,
-          upvotes: 1,
-          downvotes: 3,
-          comment: "comment 2",
-        },
-      },
-      doubt: "this is a doubt 2",
-      downvotes: 3,
-      upvotes: 3,
-      totalComments: 10,
-    },
-    3: {
-      doubtid: 3,
-      title: "title 3",
-      datePosted: 19 / 15 / 2023,
-      commentsCollection: {
-        30: {
-          commentid: 30,
-          name: "John Doe",
-          isCorrect: true,
-          upvotes: 1,
-          downvotes: 3,
-          comment: "comment 3",
-        },
-      },
-      doubt: "this is a doubt 3",
-      downvotes: 3,
-      upvotes: 3,
-      totalComments: 10,
-    },
-  };
+const Doubts = ({ home, viewDoubt, doubt }) => {
+  // TODO: home page doubts component
   const Home = () => {
     return (
-      <ScrollView style={homestyles.doubtContainer}>
+      <View style={homestyles.doubtContainers}>
         <View style={homestyles.doubtBox}>
           <View style={homestyles.doubtTitleContainer}>
-            <Text style={homestyles.doubtTitle}> </Text>
+            <Text style={homestyles.doubtTitle}> {doubt.title}</Text>
           </View>
 
-          <View style={homestyles.doubtDetails}></View>
+          <View style={homestyles.doubtDetails}>
+            <View style={{ flexDirection: "row" }}>
+              <Text
+                style={{ fontStyle: "italic", color: "#808080", fontSize: 8 }}
+              >
+                Posted by &nbsp;
+              </Text>
+              <Text style={{ fontStyle: "italic", fontSize: 8 }}>
+                {doubt.name}&nbsp;
+              </Text>
+            </View>
+            <View>
+              <Text
+                style={{ fontStyle: "italic", color: "#808080", fontSize: 8 }}
+              >
+                on {doubt.datePosted}&nbsp;
+              </Text>
+            </View>
+          </View>
           <View style={homestyles.doubtContentContainer}>
-            <Text style={homestyles.doubtContent}></Text>
+            <Text style={homestyles.doubtContent} numberOfLines={5}>
+              {doubt.doubt}
+            </Text>
           </View>
 
           <Pressable style={homestyles.readmore}>
-            <Text style={homestyles.readmoreText}>Read more</Text>
+            <Text style={homestyles.readmoreText}>Read more...</Text>
           </Pressable>
         </View>
-      </ScrollView>
+      </View>
     );
   };
+  const homestyles = StyleSheet.create({
+    doubtContainers: {
+      flex: 0.7,
+      marginVertical: 20,
+      marginHorizontal: 15,
+      backgroundColor: "#EFEFEF",
+    },
+    doubtBox: {
+      flex: 1,
+      justifyContent: "center",
+    },
+    doubtTitleContainer: {
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    doubtTitle: {
+      fontSize: 32,
+      fontWeight: "bold",
+    },
+    doubtDetails: {
+      flexDirection: "row",
+      justifyContent: "flex-end",
+      borderBottomWidth: 1,
+      borderColor: "#808080",
+      marginBottom: 10,
+    },
+    doubtContentContainer: {
+      marginTop: 5,
+    },
+    doubtContent: {
+      fontSize: 18,
+      alignItems: "center",
+      justifyContent: "center",
+      textAlign: "justify",
+    },
+    readmore: {
+      height: 40,
+      borderRadius: 18,
+      marginTop: 10,
+      backgroundColor: "#EA4335",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    readmoreText: {
+      color: "white",
+      fontSize: 18,
+    },
+  });
 
+  // TODO: view a doubt page component
   const ViewDoubt = () => {
     return (
       <View>
@@ -98,16 +109,5 @@ const Doubts = ({ home, viewDoubt }) => {
 };
 
 export default Doubts;
-
-const homestyles = StyleSheet.create({
-  doubtContainer: {
-    flex: 0.6,
-    borderWidth: 3,
-    borderColor: "black",
-    borderRadius: 15,
-    marginVertical: 20,
-    marginHorizontal: 15,
-  },
-});
 
 const viewdoubtstyles = StyleSheet.create({});

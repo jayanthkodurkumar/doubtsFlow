@@ -2,8 +2,10 @@ import { Pressable, StyleSheet, TextInput, View } from "react-native";
 import React, { useRef, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import { auth, db } from "../firebase";
+import { addDoc, collection, updateDoc } from "firebase/firestore";
 
-const TextBox = () => {
+const TextBox = ({ post, help }) => {
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
   const textInputRef = useRef();
@@ -15,13 +17,40 @@ const TextBox = () => {
   const onTitleChange = (enteredTitle) => {
     setTitle(enteredTitle);
   };
-  const addPost = () => {
-    console.log(title);
-    console.log(text);
-    setText("");
-    setTitle("");
-    textInputRef.current.clear();
-    titleInputRef.current.clear();
+
+  // TODO: add a doubt function
+  const addDoubt = async () => {
+    const date = new Date();
+    const formattedDate = date.toISOString().split("T")[0];
+
+    try {
+      const doubtsRef = await addDoc(collection(db, "doubts"), {
+        userId: "dKe9twF3HKX9lKvu6I3RZkuzKCz1",
+        title: title,
+        datePosted: formattedDate,
+        name: "Jayanth",
+        doubt: text,
+        downvotes: 0,
+        upvotes: 0,
+        totalComments: 0,
+      });
+      console.log("Document added with ID: ", doubtsRef.id);
+
+      const addId = {
+        postId: doubtsRef.id,
+      };
+
+      await updateDoc(doubtsRef, addId, { merge: true });
+
+      const usersRef = collection(db, "users");
+
+      setText("");
+      setTitle("");
+      textInputRef.current.clear();
+      titleInputRef.current.clear();
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <View style={styles.textContainer}>
@@ -53,9 +82,16 @@ const TextBox = () => {
           <Icon name="camera" size={22} color={"#808080"} />
         </Pressable>
 
-        <Pressable onPress={addPost}>
-          <Icon name="plus-circle" size={22} color={"#EA4335"} />
-        </Pressable>
+        {post && (
+          <Pressable onPress={addDoubt}>
+            <Icon name="plus-circle" size={22} color={"#EA4335"} />
+          </Pressable>
+        )}
+        {help && (
+          <Pressable>
+            <Icon name="plus-circle" size={22} color={"#EA4335"} />
+          </Pressable>
+        )}
       </View>
     </View>
   );
@@ -65,7 +101,7 @@ export default TextBox;
 
 const styles = StyleSheet.create({
   textContainer: {
-    flex: 0.5,
+    flex: 0.9,
     borderWidth: 3,
     borderColor: "black",
     borderRadius: 15,
@@ -82,10 +118,12 @@ const styles = StyleSheet.create({
     marginTop: 7,
     marginHorizontal: 5,
     textAlign: "justify",
+    fontWeight: "bold",
   },
 
   textInputContainer: {
     flex: 0.6,
+    minHeight: 200,
   },
   textInput: {
     flexWrap: "wrap",
