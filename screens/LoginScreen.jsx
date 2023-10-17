@@ -77,9 +77,9 @@ const LoginScreen = () => {
         setUserInfo(user);
         await createUser(user.uid, user.email, user.photoURL, user.displayName);
         await AsyncStorage.setItem("@user", JSON.stringify(user));
-        console.log(user);
+        // console.log(user);
         let userData = {};
-        console.log("before dispatch" + JSON.stringify(userData));
+        // console.log("before dispatch" + JSON.stringify(userData));
         userAccount = {
           userId: user.uid,
           name: user.displayName,
@@ -88,7 +88,7 @@ const LoginScreen = () => {
         };
         // this will trigger the login action inside our authReducer with payload userdata as argument
         dispatch(login(userAccount));
-        console.log("after Dispatch" + JSON.stringify(userAccount));
+        // console.log("after Dispatch" + JSON.stringify(userAccount));
       } else {
         console.log("User is not authenticated");
       }
