@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, View } from "react-native";
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useNavigation } from "@react-navigation/native";
+import { Text } from "react-native-elements";
 
 const Navbar = ({ homeIcon, helpIcon, settingsIcon }) => {
   const navigate = useNavigation();
@@ -12,7 +13,10 @@ const Navbar = ({ homeIcon, helpIcon, settingsIcon }) => {
           navigate.replace("Home");
         }}
       >
-        <Icon style={styles.icon} name="home" size={40} color="black" />
+        <Text>
+          {" "}
+          <Icon style={styles.icon} name="home" size={40} color="black" />
+        </Text>
       </Pressable>
     );
   };
@@ -23,7 +27,9 @@ const Navbar = ({ homeIcon, helpIcon, settingsIcon }) => {
           navigate.replace("Help");
         }}
       >
-        <Icon style={styles.icon} name="headset" size={40} color="black" />;
+        <Text>
+          <Icon style={styles.icon} name="headset" size={40} color="black" />
+        </Text>
       </Pressable>
     );
   };
@@ -34,7 +40,9 @@ const Navbar = ({ homeIcon, helpIcon, settingsIcon }) => {
           navigate.replace("Settings");
         }}
       >
-        <Icon style={styles.icon} name="cog" size={40} color="black" />
+        <Text>
+          <Icon style={styles.icon} name="cog" size={40} color="black" />
+        </Text>
       </Pressable>
     );
   };

@@ -1,11 +1,14 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useSelector } from "react-redux";
 
 const Headerbar = () => {
   const userDetails = useSelector((state) => state.auth.user);
-  console.log("header user" + userDetails);
+  useEffect(() => {
+    console.log("header component user" + JSON.stringify(userDetails));
+  }, [userDetails]);
+
   return (
     <View style={styles.headerContainer}>
       <View style={styles.leftContainer}>

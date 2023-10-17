@@ -80,15 +80,15 @@ const LoginScreen = () => {
         console.log(user);
         let userData = {};
         console.log("before dispatch" + JSON.stringify(userData));
-        userData = {
+        userAccount = {
           userId: user.uid,
           name: user.displayName,
           email: user.email,
           profilePic: user.photoURL,
         };
         // this will trigger the login action inside our authReducer with payload userdata as argument
-        dispatch(login(userData));
-        console.log("after Dispatch" + JSON.stringify(userData));
+        dispatch(login(userAccount));
+        console.log("after Dispatch" + JSON.stringify(userAccount));
       } else {
         console.log("User is not authenticated");
       }
