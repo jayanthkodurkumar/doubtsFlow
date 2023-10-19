@@ -22,7 +22,6 @@ SCREENS & Componenents NEEDED:
         a. Text input
     8) Footer
 
-# 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
     ADMIN: 
  
     1) Login Screen:
@@ -62,3 +61,9 @@ SCREENS & Componenents NEEDED:
         2) postContent
         3) comments object
         4) upvotes
+
+STEPS FOR GOOGLE SIGNING BUG:
+
+1. Change of kotlinVersion and added necessary native google-signin dependancies inside app/build.gradle.
+2. gradle version set to 8.1 in gradle-wrapper props.
+3. all google-cloud api client id's removed.
