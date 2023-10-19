@@ -1,14 +1,6 @@
-import {
-  Alert,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import * as WebBrowser from "expo-web-browser";
 
 import {
   GoogleAuthProvider,
@@ -18,22 +10,21 @@ import {
 import { auth, db } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HomeScreen from "./HomeScreen";
-import { Button, SocialIcon } from "react-native-elements";
+import { SocialIcon } from "react-native-elements";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/reducers/authReducer";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { useNavigation } from "@react-navigation/native";
 
 const LoginScreen = () => {
   const [userInfo, setUserInfo] = useState();
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+
   useEffect(() => {
     //
     GoogleSignin.configure({
       iosClientId:
-        "839036897753-os8gnu9uia7fsope321lqrpsf38gcup3.apps.googleusercontent.com",
+        "1039216558637-7lclgpiqtdjavcr4qqvunhrfdvcrptqt.apps.googleusercontent.com",
       webClientId:
         "1039216558637-tbnkgfkj14913cvh9gs4ot85c3ap75le.apps.googleusercontent.com",
     });
