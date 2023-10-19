@@ -1,8 +1,15 @@
-import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Alert,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import * as Google from "expo-auth-session/providers/google";
 import * as WebBrowser from "expo-web-browser";
+
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -11,23 +18,26 @@ import {
 import { auth, db } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HomeScreen from "./HomeScreen";
-import { SocialIcon } from "react-native-elements";
+import { Button, SocialIcon } from "react-native-elements";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/reducers/authReducer";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { useNavigation } from "@react-navigation/native";
 
-WebBrowser.maybeCompleteAuthSession();
 const LoginScreen = () => {
-  const dispatch = useDispatch();
-
   const [userInfo, setUserInfo] = useState();
-
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    iosClientId:
-      "839036897753-os8gnu9uia7fsope321lqrpsf38gcup3.apps.googleusercontent.com",
-    androidClientId:
-      "839036897753-55mb3m4126npsohqp5b76t8je59ktbcj.apps.googleusercontent.com",
-  });
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  useEffect(() => {
+    //
+    GoogleSignin.configure({
+      iosClientId:
+        "839036897753-os8gnu9uia7fsope321lqrpsf38gcup3.apps.googleusercontent.com",
+      webClientId:
+        "1039216558637-tbnkgfkj14913cvh9gs4ot85c3ap75le.apps.googleusercontent.com",
+    });
+  }, []);
 
   // TODO : check if user is already logged in to the device and persist.
   const checkLocalUser = async () => {
@@ -38,6 +48,25 @@ const LoginScreen = () => {
       setUserInfo(userData);
     } catch (error) {
       alert(error.message);
+    }
+  };
+
+  const googlePrompt = async function onGoogleButtonPress() {
+    try {
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
+
+      const { idToken, user } = await GoogleSignin.signIn();
+      console.log(user);
+
+      const credential = GoogleAuthProvider.credential(idToken);
+
+      signInWithCredential(auth, credential);
+      console.log("auth success");
+    } catch (error) {
+      console.error("Google Sign-In Error:", error);
+      Alert.alert("Google Sign-In Failed");
     }
   };
 
@@ -59,15 +88,6 @@ const LoginScreen = () => {
       console.log("Account successfully created!!!");
     }
   };
-  useEffect(() => {
-    // console.log(response.type);
-    if (response?.type == "success") {
-      const { id_token } = response.params;
-      const credential = GoogleAuthProvider.credential(id_token);
-
-      signInWithCredential(auth, credential);
-    }
-  }, [response]);
 
   useEffect(() => {
     checkLocalUser();
@@ -98,7 +118,7 @@ const LoginScreen = () => {
   }, []);
 
   return userInfo ? (
-    <HomeScreen promptAsync={promptAsync} />
+    <HomeScreen />
   ) : (
     <SafeAreaView style={styles.loginScreen}>
       <View style={styles.title}>
@@ -109,12 +129,7 @@ const LoginScreen = () => {
       <SafeAreaView style={styles.loginContainer}>
         <Text style={styles.loginHeader}>Connect using Google Account</Text>
 
-        <Pressable
-          style={styles.googleButtonContainer}
-          onPress={() => {
-            promptAsync();
-          }}
-        >
+        <Pressable style={styles.googleButtonContainer} onPress={googlePrompt}>
           <SocialIcon type="google" />
         </Pressable>
       </SafeAreaView>

@@ -6,19 +6,22 @@ buildscript {
         minSdkVersion = Integer.parseInt(findProperty('android.minSdkVersion') ?: '21')
         compileSdkVersion = Integer.parseInt(findProperty('android.compileSdkVersion') ?: '33')
         targetSdkVersion = Integer.parseInt(findProperty('android.targetSdkVersion') ?: '33')
-        kotlinVersion = findProperty('android.kotlinVersion') ?: '1.8.10'
+        kotlinVersion = findProperty('android.kotlinVersion') ?: '1.7.10'
         frescoVersion = findProperty('expo.frescoVersion') ?: '2.5.0'
 
         // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
         ndkVersion = "23.1.7779620"
+        googlePlayServicesAuthVersion = "19.2.0" // <--- use this version or newer
+
     }
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        classpath('com.android.tools.build:gradle:7.4.2')
         classpath('com.facebook.react:react-native-gradle-plugin')
+        classpath 'com.android.tools.build:gradle:4.2.1' // <--- use this version or newer
+        classpath 'com.google.gms:google-services:4.3.10' // <--- use this version or newer
     }
 }
 
@@ -42,3 +45,5 @@ allprojects {
 def expoCameraMavenPath = new File(["node", "--print", "require.resolve('expo-camera/package.json')"].execute(null, rootDir).text.trim(), "../android/maven")
 allprojects { repositories { maven { url(expoCameraMavenPath) } } }
 // @generated end expo-camera-import
+
+apply plugin: 'com.google.gms.google-services' // <--- this should be the last line
