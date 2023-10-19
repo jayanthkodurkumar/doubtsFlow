@@ -27,6 +27,8 @@ const LoginScreen = () => {
       "839036897753-os8gnu9uia7fsope321lqrpsf38gcup3.apps.googleusercontent.com",
     androidClientId:
       "839036897753-55mb3m4126npsohqp5b76t8je59ktbcj.apps.googleusercontent.com",
+    expoClientId:
+      "839036897753-qgmbig12f5aekoehuel2m7ic049fhrgc.apps.googleusercontent.com",
   });
 
   // TODO : check if user is already logged in to the device and persist.
@@ -112,7 +114,7 @@ const LoginScreen = () => {
         <Pressable
           style={styles.googleButtonContainer}
           onPress={() => {
-            promptAsync();
+            promptAsync({ useProxy: true });
           }}
         >
           <SocialIcon type="google" />

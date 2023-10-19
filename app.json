@@ -4,7 +4,7 @@
     "slug": "doubtsflow",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/appicon.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splashscreen.png",
@@ -26,6 +26,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "scheme": "doubtsflow"
+    "scheme": "doubtsflow",
+    "extra": {
+      "eas": {
+        "projectId": "87972a23-86d3-4f54-8eeb-e4f64a58f5c7"
+      }
+    }
   }
 }
