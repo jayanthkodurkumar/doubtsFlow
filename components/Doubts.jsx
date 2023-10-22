@@ -1,7 +1,13 @@
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import React from "react";
+import { useNavigation } from "@react-navigation/core";
 
 const Doubts = ({ home, viewDoubt, doubt }) => {
+  const navigation = useNavigation();
+  // console.log(doubt);
+  const handleReadMore = () => {
+    navigation.navigate("ViewDoubt", { doubt });
+  };
   // TODO: home page doubts component
   const Home = () => {
     return (
@@ -36,7 +42,12 @@ const Doubts = ({ home, viewDoubt, doubt }) => {
             </Text>
           </View>
 
-          <Pressable style={homestyles.readmore}>
+          <Pressable
+            style={homestyles.readmore}
+            onPress={() => {
+              handleReadMore(doubt);
+            }}
+          >
             <Text style={homestyles.readmoreText}>Read more...</Text>
           </Pressable>
         </View>

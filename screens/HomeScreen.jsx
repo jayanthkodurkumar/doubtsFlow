@@ -10,15 +10,38 @@ import Headerbar from "../components/Headerbar";
 
 import TextBox from "../components/TextBox";
 import Doubts from "../components/Doubts";
-import { collection, getDocs } from "firebase/firestore";
-import { useSelector } from "react-redux";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { useDispatch, useSelector } from "react-redux";
+import { currentuser } from "../redux/reducers/userReducer";
 
 const HomeScreen = ({ promptAsync }) => {
   const navigation = useNavigation();
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  // TODO: useEffect to fetch user data from users collection
+  const [loggedUser, setLoggedUser] = useState([]);
   useEffect(() => {
-    console.log("user from store" + JSON.stringify(user));
-  }, []);
+    const fetchUsers = async () => {
+      // console.log("user from store" + JSON.stringify(user));
+      const uid = user.userId;
+      const usersRef = doc(db, "users", uid);
+
+      const userDoc = await getDoc(usersRef);
+
+      const userData = [];
+
+      if (userDoc.exists()) {
+        const dataToPush = userDoc.data();
+        userData.push(dataToPush);
+      }
+      setLoggedUser(userData);
+      dispatch(currentuser(userData));
+
+      return userData;
+    };
+    fetchUsers();
+  }, [user]);
+
   // TODO: useEffect to fetch data from doubts collection whenever doubtsArray changes
   const [doubtsArray, setDoubtsArray] = useState([]);
   useEffect(() => {
@@ -35,6 +58,7 @@ const HomeScreen = ({ promptAsync }) => {
     };
     fetchDoubts();
   }, [doubtsArray]);
+  // console.log(doubtsArray);
 
   return (
     <SafeAreaView style={styles.homeScreenContainer}>

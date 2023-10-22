@@ -4,10 +4,11 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { useSelector } from "react-redux";
 
 const Headerbar = () => {
-  const userDetails = useSelector((state) => state.auth.user);
+  const userDetails = useSelector((state) => state.currentuser.currentuser);
+
   useEffect(() => {
     console.log("header component user" + JSON.stringify(userDetails));
-  }, [userDetails]);
+  }, []);
 
   return (
     <View style={styles.headerContainer}>
@@ -25,7 +26,7 @@ const Headerbar = () => {
           <Image
             style={styles.profilePic}
             source={{
-              uri: userDetails.profilePic,
+              uri: userDetails[0].profilePic,
             }}
           />
         </Pressable>
