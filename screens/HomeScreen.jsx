@@ -41,7 +41,7 @@ const HomeScreen = ({ promptAsync }) => {
         const dataToPush = userDoc.data();
         userData.push(dataToPush);
       }
-      setLoggedUser((prevData) => userData);
+      setLoggedUser(userData);
       dispatch(currentuser(userData));
       return userData;
     };
