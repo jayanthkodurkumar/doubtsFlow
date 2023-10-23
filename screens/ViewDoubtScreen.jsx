@@ -9,6 +9,7 @@ const ViewDoubtScreen = ({ route }) => {
   // Access the doubt parameter from route.params
   let doubts = [];
   doubts.push(route.params?.doubt);
+  console.log(doubts);
 
   // Check if doubt is defined before logging
 

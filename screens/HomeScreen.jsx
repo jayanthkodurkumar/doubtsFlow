@@ -10,9 +10,16 @@ import Headerbar from "../components/Headerbar";
 
 import TextBox from "../components/TextBox";
 import Doubts from "../components/Doubts";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+} from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { currentuser } from "../redux/reducers/userReducer";
+import { logout } from "../redux/reducers/authReducer";
 
 const HomeScreen = ({ promptAsync }) => {
   const navigation = useNavigation();
@@ -34,15 +41,22 @@ const HomeScreen = ({ promptAsync }) => {
         const dataToPush = userDoc.data();
         userData.push(dataToPush);
       }
-      setLoggedUser(userData);
+      setLoggedUser((prevData) => userData);
       dispatch(currentuser(userData));
-
       return userData;
     };
-    fetchUsers();
-  }, [user]);
+    const fetchData = async () => {
+      const userData = await fetchUsers();
+    };
+    fetchData();
+    return () => {
+      // clean up to prevent infinite fetchof user
+    };
+  }, []);
+  console.log("home user", user);
+  // console.log("render");
 
-  // TODO: useEffect to fetch data from doubts collection whenever doubtsArray changes
+  // TODO: useEffect to fetch doubts and update state
   const [doubtsArray, setDoubtsArray] = useState([]);
   useEffect(() => {
     const fetchDoubts = async () => {
@@ -57,13 +71,30 @@ const HomeScreen = ({ promptAsync }) => {
       return data;
     };
     fetchDoubts();
-  }, [doubtsArray]);
-  // console.log(doubtsArray);
+  }, []);
 
+  // TODO: get the new doubts collection
+  useEffect(() => {
+    const doubtsRef = collection(db, "doubts");
+
+    const unsubscribe = onSnapshot(doubtsRef, (querySnapshot) => {
+      const data = [];
+      querySnapshot.forEach((doc) => {
+        data.push(doc.data());
+      });
+      setDoubtsArray(data);
+    });
+
+    // clean up to stop getting data from firestore after homescreen component unmounts
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+  // console.log("db changed:", doubtsArray);
   return (
     <SafeAreaView style={styles.homeScreenContainer}>
       <View style={styles.headerContainer}>
-        <Headerbar />
+        <Headerbar user={loggedUser} />
       </View>
       <ScrollView style={styles.bodyContainer}>
         <TextBox post={true} />
@@ -79,7 +110,10 @@ const HomeScreen = ({ promptAsync }) => {
             try {
               AsyncStorage.clear();
               signOut(auth);
+              dispatch(logout());
+              dispatch(currentuser({}));
               console.log("User signed out");
+
               navigation.replace("Login");
             } catch (error) {
               console.error("Error signing out:", error);

@@ -3,13 +3,16 @@ import React, { useEffect } from "react";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useSelector } from "react-redux";
 
-const Headerbar = () => {
+const Headerbar = ({ user }) => {
   const userDetails = useSelector((state) => state.currentuser.currentuser);
+  // console.log(userDetails);
 
-  useEffect(() => {
-    console.log("header component user" + JSON.stringify(userDetails));
-  }, []);
+  // useEffect(() => {
+  //   console.log("header component user" + JSON.stringify(userDetails));
+  // }, []);
 
+  // console.log(user);
+  // console.log(userDetails);
   return (
     <View style={styles.headerContainer}>
       <View style={styles.leftContainer}>
