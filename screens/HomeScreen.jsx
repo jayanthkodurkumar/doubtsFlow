@@ -6,8 +6,6 @@ import { signOut } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Navbar from "../components/Navbar";
-import Headerbar from "../components/Headerbar";
-
 import TextBox from "../components/TextBox";
 import Doubts from "../components/Doubts";
 import {
@@ -20,8 +18,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { currentuser } from "../redux/reducers/userReducer";
 import { logout } from "../redux/reducers/authReducer";
+import { Image } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
-const HomeScreen = ({ promptAsync }) => {
+const HomeScreen = () => {
   const navigation = useNavigation();
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
@@ -91,6 +91,34 @@ const HomeScreen = ({ promptAsync }) => {
     };
   }, []);
   // console.log("db changed:", doubtsArray);
+
+  // Header Bar
+  const Headerbar = () => {
+    return (
+      <View style={styles.headerContainer}>
+        <View style={styles.leftContainer}>
+          <Text style={styles.appNameContainer}>
+            <Text style={styles.appNamePart1}>DOUBTS</Text>
+            <Text style={styles.appNamePart2}>FLOW</Text>
+          </Text>
+        </View>
+        <View style={styles.rightContainer}>
+          <View style={styles.premiumIconContainer}>
+            <Icon name="crown" size={24} color="gold" />
+          </View>
+          <Pressable style={styles.profilepictureContainer}>
+            <Image
+              style={styles.profilePic}
+              source={{
+                uri: user.profilePic,
+              }}
+            />
+          </Pressable>
+        </View>
+      </View>
+    );
+  };
+
   return (
     <SafeAreaView style={styles.homeScreenContainer}>
       <View style={styles.headerContainer}>
@@ -152,5 +180,43 @@ const styles = StyleSheet.create({
     alignItems: "stretch",
     justifyContent: "center",
     backgroundColor: "#EFEFEF",
+  },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 5,
+    backgroundColor: "#EFEFEF",
+  },
+  leftContainer: {
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    flex: 0.7,
+  },
+  appNameContainer: {
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  appNamePart1: {
+    fontSize: 28,
+    color: "#000000",
+  },
+  appNamePart2: {
+    fontSize: 28,
+    color: "#EA4335",
+  },
+  rightContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    gap: 10,
+    flex: 0.3,
+  },
+  premiumIconContainer: {},
+  profilepictureContainer: {},
+  profilePic: {
+    width: 60,
+    height: 60,
+    borderRadius: 50,
   },
 });

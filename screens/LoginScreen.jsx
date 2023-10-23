@@ -16,10 +16,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/reducers/authReducer";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { currentuser } from "../redux/reducers/userReducer";
+import { useNavigation } from "@react-navigation/native";
 
 const LoginScreen = () => {
   const [userInfo, setUserInfo] = useState();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   useEffect(() => {
     //
@@ -100,7 +102,7 @@ const LoginScreen = () => {
         };
         // this will trigger the login action inside our authReducer with payload userdata as argument
         dispatch(login(userAccount));
-
+        // navigation.navigate("Home");
         // console.log("after Dispatch" + JSON.stringify(userAccount));
       } else {
         console.log("User is not authenticated");
