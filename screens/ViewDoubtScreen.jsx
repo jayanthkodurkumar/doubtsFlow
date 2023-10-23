@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Doubts from "../components/Doubts";
+import Comments from "../components/Comments";
 
 const ViewDoubtScreen = ({ route }) => {
   // Access the doubt parameter from route.params
@@ -18,6 +19,7 @@ const ViewDoubtScreen = ({ route }) => {
   return (
     <SafeAreaView>
       <Doubts viewDoubt={true} doubt={doubt} />
+      <Comments />
     </SafeAreaView>
   );
 };

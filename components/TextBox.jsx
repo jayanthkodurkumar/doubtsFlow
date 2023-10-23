@@ -39,6 +39,7 @@ const TextBox = ({ post, help }) => {
         downvotes: 0,
         upvotes: 0,
         totalComments: 0,
+        comments: [],
       });
       console.log("Document added with ID: ", doubtsRef.id);
 
