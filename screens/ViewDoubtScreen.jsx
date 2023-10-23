@@ -1,14 +1,23 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Doubts from "../components/Doubts";
 
-const ViewDoubtScreen = () => {
-  // const { doubt } = route.params;
-  // console.log(doubt);
+const ViewDoubtScreen = ({ route }) => {
+  // Access the doubt parameter from route.params
+  const doubt = {};
+  useEffect(() => {
+    doubt = route.params?.doubt;
+  }, []);
+
+  // Check if doubt is defined before logging
+  // if (doubt) {
+  //   console.log(doubt);
+  // }
+
   return (
     <SafeAreaView>
-      <Doubts viewDoubt={true} />
+      <Doubts viewDoubt={true} doubt={doubt} />
     </SafeAreaView>
   );
 };

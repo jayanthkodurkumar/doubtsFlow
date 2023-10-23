@@ -4,9 +4,9 @@ import { useNavigation } from "@react-navigation/core";
 
 const Doubts = ({ home, viewDoubt, doubt }) => {
   const navigation = useNavigation();
-  // console.log(doubt);
+
   const handleReadMore = () => {
-    navigation.navigate("ViewDoubt", { doubt });
+    navigation.navigate("ViewDoubt", { doubt: doubt });
   };
   // TODO: home page doubts component
   const Home = () => {
@@ -109,7 +109,7 @@ const Doubts = ({ home, viewDoubt, doubt }) => {
       <View style={viewdoubtstyles.doubtContainers}>
         <View style={viewdoubtstyles.doubtBox}>
           <View style={viewdoubtstyles.doubtTitleContainer}>
-            <Text style={viewdoubtstyles.doubtTitle}> TITLE</Text>
+            <Text style={viewdoubtstyles.doubtTitle}> {doubt.title}</Text>
           </View>
 
           <View style={viewdoubtstyles.doubtDetails}>
@@ -120,21 +120,19 @@ const Doubts = ({ home, viewDoubt, doubt }) => {
                 Posted by &nbsp;
               </Text>
               <Text style={{ fontStyle: "italic", fontSize: 8 }}>
-                John&nbsp;
+                {doubt.name}&nbsp;
               </Text>
             </View>
             <View>
               <Text
                 style={{ fontStyle: "italic", color: "#808080", fontSize: 8 }}
               >
-                on somedate &nbsp;
+                on {doubt.datePosted} &nbsp;
               </Text>
             </View>
           </View>
           <View style={viewdoubtstyles.doubtContentContainer}>
-            <Text style={viewdoubtstyles.doubtContent} numberOfLines={5}>
-              doubt content
-            </Text>
+            <Text style={viewdoubtstyles.doubtContent}>{doubt.doubt}</Text>
           </View>
         </View>
       </View>

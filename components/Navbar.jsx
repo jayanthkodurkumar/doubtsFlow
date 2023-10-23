@@ -24,7 +24,7 @@ const Navbar = ({ homeIcon, helpIcon, settingsIcon }) => {
     return (
       <Pressable
         onPress={() => {
-          navigate.replace("Help");
+          navigate.navigate("Help");
         }}
       >
         <Text>
@@ -37,7 +37,7 @@ const Navbar = ({ homeIcon, helpIcon, settingsIcon }) => {
     return (
       <Pressable
         onPress={() => {
-          navigate.replace("Settings");
+          navigate.navigate("Settings");
         }}
       >
         <Text>

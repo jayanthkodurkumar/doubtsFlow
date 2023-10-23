@@ -22,14 +22,14 @@ const Headerbar = () => {
         <View style={styles.premiumIconContainer}>
           <Icon name="crown" size={24} color="gold" />
         </View>
-        <Pressable style={styles.profilepictureContainer}>
+        {/* <Pressable style={styles.profilepictureContainer}>
           <Image
             style={styles.profilePic}
             source={{
               uri: userDetails[0].profilePic,
             }}
           />
-        </Pressable>
+        </Pressable> */}
       </View>
     </View>
   );

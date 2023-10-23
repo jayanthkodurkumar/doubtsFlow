@@ -14,11 +14,6 @@ const StackNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Settings"
-          component={SettingsScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
           name="Login"
           component={LoginScreen}
           options={{ headerShown: false }}
@@ -37,6 +32,12 @@ const StackNavigator = () => {
         <Stack.Screen
           name="ViewDoubt"
           component={ViewDoubtScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="Settings"
+          component={SettingsScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
