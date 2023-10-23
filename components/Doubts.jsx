@@ -105,11 +105,12 @@ const Doubts = ({ home, viewDoubt, doubt }) => {
 
   // TODO: view a doubt page component
   const ViewDoubt = () => {
+    console.log(doubt[0]);
     return (
       <View style={viewdoubtstyles.doubtContainers}>
         <View style={viewdoubtstyles.doubtBox}>
           <View style={viewdoubtstyles.doubtTitleContainer}>
-            <Text style={viewdoubtstyles.doubtTitle}> {doubt.title}</Text>
+            <Text style={viewdoubtstyles.doubtTitle}> {doubt[0].title}</Text>
           </View>
 
           <View style={viewdoubtstyles.doubtDetails}>
@@ -120,19 +121,19 @@ const Doubts = ({ home, viewDoubt, doubt }) => {
                 Posted by &nbsp;
               </Text>
               <Text style={{ fontStyle: "italic", fontSize: 8 }}>
-                {doubt.name}&nbsp;
+                {doubt[0].name}&nbsp;
               </Text>
             </View>
             <View>
               <Text
                 style={{ fontStyle: "italic", color: "#808080", fontSize: 8 }}
               >
-                on {doubt.datePosted} &nbsp;
+                on {doubt[0].datePosted} &nbsp;
               </Text>
             </View>
           </View>
           <View style={viewdoubtstyles.doubtContentContainer}>
-            <Text style={viewdoubtstyles.doubtContent}>{doubt.doubt}</Text>
+            <Text style={viewdoubtstyles.doubtContent}>{doubt[0].doubt}</Text>
           </View>
         </View>
       </View>

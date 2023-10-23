@@ -30,14 +30,14 @@ const StackNavigator = () => {
         />
 
         <Stack.Screen
-          name="ViewDoubt"
-          component={ViewDoubtScreen}
+          name="Settings"
+          component={SettingsScreen}
           options={{ headerShown: false }}
         />
 
         <Stack.Screen
-          name="Settings"
-          component={SettingsScreen}
+          name="ViewDoubt"
+          component={ViewDoubtScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
