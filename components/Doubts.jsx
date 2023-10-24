@@ -105,7 +105,7 @@ const Doubts = ({ home, viewDoubt, doubt }) => {
 
   // TODO: view a doubt page component
   const ViewDoubt = () => {
-    console.log(doubt[0]);
+    // console.log(doubt[0]);
     return (
       <View style={viewdoubtstyles.doubtContainers}>
         <View style={viewdoubtstyles.doubtBox}>

@@ -1,66 +1,95 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { TextInput } from "react-native";
 import { Icon } from "react-native-elements";
 import { ScrollView } from "react-native";
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../firebase";
+import { useSelector } from "react-redux";
 
-const Comments = () => {
-  const [text, setText] = useState("");
+const Comments = ({ currentDoubt }) => {
+  // console.log("doubt on comments component", currentDoubt);
+  // console.log("comments array: ", currentDoubt[0].comments);
 
-  const textInputRef = useRef();
+  const user = useSelector((state) => state.auth.user);
+  // console.log(user);
+  const [comment, setComment] = useState("");
 
-  const onTextChange = (enteredText) => {
-    setText(enteredText);
+  const commentInputRef = useRef();
+
+  const onCommentChange = (enteredComment) => {
+    setComment(enteredComment);
   };
+  const docId = currentDoubt[0].postId;
 
-  const comments = [
-    {
-      id: 1,
-      comment: "comment 1",
-      name: "johne",
-      date: "oct 23",
-      isCorrect: false,
-    },
-    {
-      id: 2,
-      comment: "comment 2",
-      name: "dave",
-      date: "oct 23",
-      isCorrect: false,
-    },
-    {
-      id: 3,
-      comment:
-        "comment 3The shoes had been there for as long as anyone could remember. In fact, it was difficult for anyone to come up with a date they had first appeared. It had seemed they'd always been there and yet they seemed so out of place. Why nobody had removed them was a question that had been asked time and again, but while they all thought it, nobody had ever found the energy to actually do it. So, the shoes remained on the steps, out of place in one sense, but perfectly normal in another.",
-      name: "maek",
-      date: "oct 23",
-      isCorrect: true,
-    },
-    {
-      id: 4,
-      comment:
-        "comment 3The shoes had been there for as long as anyone could remember. In fact, it was difficult for anyone to come up with a date they had first appeared. It had seemed they'd always been there and yet they seemed so out of place. Why nobody had removed them was a question that had been asked time and again, but while they all thought it, nobody had ever found the energy to actually do it. So, the shoes remained on the steps, out of place in one sense, but perfectly normal in another.",
-      name: "maek",
-      date: "oct 23",
-      isCorrect: true,
-    },
-    {
-      id: 5,
-      comment:
-        "comment 3The shoes had been there for as long as anyone could remember. In fact, it was difficult for anyone to come up with a date they had first appeared. It had seemed they'd always been there and yet they seemed so out of place. Why nobody had removed them was a question that had been asked time and again, but while they all thought it, nobody had ever found the energy to actually do it. So, the shoes remained on the steps, out of place in one sense, but perfectly normal in another.",
-      name: "maek",
-      date: "oct 23",
-      isCorrect: true,
-    },
-  ];
+  // TODO: fetch all comments
+  const [commentsArray, setCommentsArray] = useState([]);
+
+  // TODO: get the new doubts collection
+  useEffect(() => {
+    const doubtsRef = collection(db, "doubts");
+    const docRef = doc(doubtsRef, docId);
+
+    const unsubscribe = onSnapshot(docRef, (docSnapshot) => {
+      const data = docSnapshot.data();
+      if (data.comments) {
+        setCommentsArray(data.comments);
+      }
+    });
+
+    // clean up to stop getting data from firestore after homescreen component unmounts
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+  // console.
+
+  console.log("new comments array", commentsArray);
+  // TODO: add a doubt function
+  const len = commentsArray.length;
+  const addComment = async () => {
+    const date = new Date();
+    const formattedDate = date.toISOString().split("T")[0];
+
+    try {
+      const doubtsRef = collection(db, "doubts");
+      const docRef = doc(doubtsRef, docId);
+
+      const userComment = {
+        id: len + 3,
+        date: formattedDate,
+        name: user.name,
+        content: comment,
+        isCorrect: false,
+      };
+
+      await updateDoc(docRef, { comments: arrayUnion(userComment) });
+
+      console.log("Comment added successfully");
+      console.log("updated post:", currentDoubt[0].comments);
+      setComment("");
+
+      commentInputRef.current.clear();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const ViewComments = () => {
     return (
       <ScrollView style={styles.viewCommentcontainer}>
-        {comments.map((comment) => (
+        {commentsArray.map((comment) => (
           <View key={comment.id} style={styles.individualComment}>
-            <Text style={styles.commentText}>{comment.comment}</Text>
+            <Text style={styles.commentText}>{comment.content}</Text>
             <View
               style={{
                 flexDirection: "row",
@@ -95,13 +124,13 @@ const Comments = () => {
               style={styles.commentInput}
               placeholder="ADD A COMMENT..."
               multiline={true}
-              onChangeText={onTextChange}
-              ref={textInputRef}
+              onChangeText={onCommentChange}
+              ref={commentInputRef}
             ></TextInput>
           </KeyboardAwareScrollView>
         </View>
         <View style={styles.commentFunctionContainer}>
-          <Pressable>
+          <Pressable onPress={addComment}>
             <Icon name="add-comment" size={22} color={"#808080"} />
           </Pressable>
         </View>
@@ -125,7 +154,8 @@ export default Comments;
 
 const styles = StyleSheet.create({
   commentContainer: {
-    flex: 0.52,
+    flex: 1,
+    gap: 15,
     borderWidth: 1,
     borderColor: "black",
     borderRadius: 10,
@@ -134,7 +164,7 @@ const styles = StyleSheet.create({
   },
   commentInputContainer: {
     flex: 0.9,
-    maxHeight: 100,
+    height: 100,
   },
   commentInput: {
     flexWrap: "wrap",
@@ -144,6 +174,7 @@ const styles = StyleSheet.create({
   },
   commentFunctionContainer: {
     flex: 0.1,
+    height: 30,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-end",

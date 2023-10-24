@@ -53,7 +53,7 @@ const HomeScreen = () => {
       // clean up to prevent infinite fetchof user
     };
   }, []);
-  console.log("home user", user);
+  // console.log("home user", loggedUser);
   // console.log("render");
 
   // TODO: useEffect to fetch doubts and update state
