@@ -43,7 +43,7 @@ const Comments = ({ currentDoubt }) => {
     console.log(docRef);
     const unsubscribe = onSnapshot(docRef, (docSnapshot) => {
       const data = docSnapshot.data();
-      if (data.comments) {
+      if (data && data.comments) {
         setCommentsArray(data.comments);
       }
     });
