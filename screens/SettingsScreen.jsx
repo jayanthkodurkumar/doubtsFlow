@@ -5,10 +5,10 @@ import Navbar from "../components/Navbar";
 import { Button, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { auth, db } from "../firebase";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signOut } from "firebase/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc, collection, getDoc } from "firebase/firestore";
 import { currentuser } from "../redux/reducers/userReducer";
 import { logout } from "../redux/reducers/authReducer";
 
@@ -26,14 +26,30 @@ const SettingsScreen = () => {
       console.log("User signed out");
       dispatch(logout());
       dispatch(currentuser({}));
+      navigation.replace("Login");
     } catch (error) {
       console.error("Error signing out:", error);
     }
   };
 
   const deleteAccount = async () => {
+    // console.log(auth.currentUser);
+
+    await auth.currentUser.delete();
+    console.log("accoutn deleted");
+
     const docId = userDetails.userId;
     const docRef = doc(db, "users", docId);
+    const userData = await getDoc(docRef);
+    const posts = userData.data().doubtsID;
+    console.log(posts);
+    const doubtsRef = collection(db, "doubts");
+    for (let i = 0; i < posts.length; i++) {
+      const id = posts[i];
+      const userdoubt = doc(doubtsRef, id);
+      await deleteDoc(userdoubt);
+    }
+
     await deleteDoc(docRef);
 
     Alert.alert("Account Deleted", "Sorry to see you go.", [
@@ -44,7 +60,7 @@ const SettingsScreen = () => {
     AsyncStorage.clear();
     dispatch(currentuser({}));
     navigation.replace("Login");
-    signout();
+    // signout();
   };
   return (
     <SafeAreaView style={styles.settingsContainer}>

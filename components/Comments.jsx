@@ -17,7 +17,9 @@ import { db } from "../firebase";
 import { useSelector } from "react-redux";
 
 const Comments = ({ currentDoubt }) => {
-  // console.log("doubt on comments component", currentDoubt);
+  const docId = currentDoubt[0].doubtID;
+
+  console.log("doubt on comments component", currentDoubt);
   // console.log("comments array: ", currentDoubt[0].comments);
 
   const user = useSelector((state) => state.auth.user);
@@ -29,7 +31,6 @@ const Comments = ({ currentDoubt }) => {
   const onCommentChange = (enteredComment) => {
     setComment(enteredComment);
   };
-  const docId = currentDoubt[0].postId;
 
   // TODO: fetch all comments
   const [commentsArray, setCommentsArray] = useState([]);
@@ -37,8 +38,9 @@ const Comments = ({ currentDoubt }) => {
   // TODO: get the new doubts collection
   useEffect(() => {
     const doubtsRef = collection(db, "doubts");
-    const docRef = doc(doubtsRef, docId);
 
+    const docRef = doc(doubtsRef, docId);
+    console.log(docRef);
     const unsubscribe = onSnapshot(docRef, (docSnapshot) => {
       const data = docSnapshot.data();
       if (data.comments) {
@@ -78,39 +80,55 @@ const Comments = ({ currentDoubt }) => {
       console.log("updated post:", currentDoubt[0].comments);
       setComment("");
 
-      commentInputRef.current.clear();
+      // Check if the ref is not null before calling clear
+      if (commentInputRef.current) {
+        commentInputRef.current.clear();
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
+  var commentsArrayLength = commentsArray.length;
   const ViewComments = () => {
     return (
       <ScrollView style={styles.viewCommentcontainer}>
-        {commentsArray.map((comment) => (
-          <View key={comment.id} style={styles.individualComment}>
-            <Text style={styles.commentText}>{comment.content}</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={styles.commentName}>
-                By {comment.name} on {comment.date}
-              </Text>
-              {comment.isCorrect && (
-                <Icon
-                  name="check-circle"
-                  type="font-awesome"
-                  color="green"
-                  size={20}
-                />
-              )}
+        {commentsArrayLength > 0 ? (
+          commentsArray.map((comment) => (
+            <View key={comment.id} style={styles.individualComment}>
+              <Text style={styles.commentText}>{comment.content}</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={styles.commentName}>
+                  By {comment.name} on {comment.date}
+                </Text>
+                {comment.isCorrect && (
+                  <Icon
+                    name="check-circle"
+                    type="font-awesome"
+                    color="green"
+                    size={20}
+                  />
+                )}
+              </View>
             </View>
-          </View>
-        ))}
+          ))
+        ) : (
+          <Text
+            style={{
+              fontSize: 16,
+              textAlign: "center",
+              fontWeight: "500",
+            }}
+          >
+            No comments yet...
+          </Text>
+        )}
       </ScrollView>
     );
   };

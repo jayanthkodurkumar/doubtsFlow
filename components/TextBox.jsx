@@ -10,7 +10,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { auth, db } from "../firebase";
-import { addDoc, collection, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { useSelector } from "react-redux";
 
 const TextBox = ({ post, help }) => {
@@ -51,12 +57,15 @@ const TextBox = ({ post, help }) => {
       console.log("Document added with ID: ", doubtsRef.id);
 
       const addId = {
-        postId: doubtsRef.id,
+        doubtID: doubtsRef.id,
       };
 
       await updateDoc(doubtsRef, addId, { merge: true });
 
       const usersRef = collection(db, "users");
+
+      const userRef = doc(usersRef, userDetails.userId);
+      await updateDoc(userRef, { doubtsID: arrayUnion(doubtsRef.id) });
 
       setText("");
       setTitle("");
