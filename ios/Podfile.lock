@@ -92,6 +92,8 @@ PODS:
     - ExpoModulesCore
   - ExpoKeepAwake (12.3.0):
     - ExpoModulesCore
+  - ExpoMailComposer (12.3.0):
+    - ExpoModulesCore
   - ExpoModulesCore (1.5.11):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -594,6 +596,7 @@ DEPENDENCIES:
   - "ExpoAdapterGoogleSignIn (from `../node_modules/@react-native-google-signin/google-signin/expo/ios`)"
   - ExpoCrypto (from `../node_modules/expo-crypto/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
+  - ExpoMailComposer (from `../node_modules/expo-mail-composer/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - ExpoRandom (from `../node_modules/expo-random/ios`)
   - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
@@ -699,6 +702,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-crypto/ios"
   ExpoKeepAwake:
     :path: "../node_modules/expo-keep-awake/ios"
+  ExpoMailComposer:
+    :path: "../node_modules/expo-mail-composer/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core"
   ExpoRandom:
@@ -825,6 +830,7 @@ SPEC CHECKSUMS:
   ExpoAdapterGoogleSignIn: b6e7ca3d25261737d31c274460b503ff1b6cb303
   ExpoCrypto: 42485127a5968dda6f67ac5f2b42d3c0af31d7db
   ExpoKeepAwake: be4cbd52d9b177cde0fd66daa1913afa3161fc1d
+  ExpoMailComposer: feaebd62095efad901ede864b95406f02bf61681
   ExpoModulesCore: 51cb2e7ab4c8da14be3f40b66d54c1781002e99d
   ExpoRandom: 4f2bba684312acd6c0700528ae62f85265776c84
   ExpoSystemUI: fa4854e3226e87f86d3383570264c6e4e90bc782

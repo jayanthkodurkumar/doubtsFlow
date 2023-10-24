@@ -28,11 +28,13 @@ const StackNavigator = () => {
           component={HelpScreen}
           options={{ headerShown: false }}
         />
+
         <Stack.Screen
           name="Settings"
           component={SettingsScreen}
           options={{ headerShown: false }}
         />
+
         <Stack.Screen
           name="ViewDoubt"
           component={ViewDoubtScreen}
