@@ -1,4 +1,11 @@
-import { Pressable, StyleSheet, TextInput, View } from "react-native";
+import {
+  Alert,
+  Linking,
+  Pressable,
+  StyleSheet,
+  TextInput,
+  View,
+} from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -59,47 +66,81 @@ const TextBox = ({ post, help }) => {
       console.log(error);
     }
   };
+  // TODO: send email for help
+  handleEmail = () => {
+    console.log("email pressed");
+  };
+
   return (
     <View style={styles.textContainer}>
-      <View style={styles.titleInputContainer}>
-        <KeyboardAwareScrollView>
-          <TextInput
-            style={styles.titleInput}
-            flex={1}
-            placeholder="SUGGEST A TITLE"
-            multiline={true}
-            onChangeText={onTitleChange}
-            ref={titleInputRef}
-          ></TextInput>
-        </KeyboardAwareScrollView>
-      </View>
-      <View style={styles.textInputContainer}>
-        <KeyboardAwareScrollView>
-          <TextInput
-            style={styles.textInput}
-            placeholder="HAVE A DOUBT?"
-            multiline={true}
-            onChangeText={onTextChange}
-            ref={textInputRef}
-          ></TextInput>
-        </KeyboardAwareScrollView>
-      </View>
-      <View style={styles.textFunctionContainer}>
-        <Pressable>
-          <Icon name="camera" size={22} color={"#808080"} />
-        </Pressable>
+      {post && (
+        <>
+          <View style={styles.titleInputContainer}>
+            <KeyboardAwareScrollView>
+              <TextInput
+                style={styles.titleInput}
+                flex={1}
+                placeholder="SUGGEST A TITLE"
+                multiline={true}
+                onChangeText={onTitleChange}
+                ref={titleInputRef}
+              ></TextInput>
+            </KeyboardAwareScrollView>
+          </View>
+          <View style={styles.textInputContainer}>
+            <KeyboardAwareScrollView>
+              <TextInput
+                style={styles.textInput}
+                placeholder="HAVE A DOUBT?"
+                multiline={true}
+                onChangeText={onTextChange}
+                ref={textInputRef}
+              ></TextInput>
+            </KeyboardAwareScrollView>
+          </View>
+          <View style={styles.textFunctionContainer}>
+            <Pressable>
+              <Icon name="camera" size={22} color={"#808080"} />
+            </Pressable>
 
-        {post && (
-          <Pressable onPress={addDoubt}>
-            <Icon name="plus-circle" size={22} color={"#EA4335"} />
-          </Pressable>
-        )}
-        {help && (
-          <Pressable>
-            <Icon name="plus-circle" size={22} color={"#EA4335"} />
-          </Pressable>
-        )}
-      </View>
+            <Pressable onPress={addDoubt}>
+              <Icon name="plus-circle" size={22} color={"#EA4335"} />
+            </Pressable>
+          </View>
+        </>
+      )}
+      {help && (
+        <>
+          <View style={styles.titleInputContainer}>
+            <KeyboardAwareScrollView>
+              <TextInput
+                style={styles.titleInput}
+                flex={1}
+                placeholder="Enter the subject"
+                multiline={true}
+                onChangeText={onTitleChange}
+                ref={titleInputRef}
+              ></TextInput>
+            </KeyboardAwareScrollView>
+          </View>
+          <View style={styles.textInputContainer}>
+            <KeyboardAwareScrollView>
+              <TextInput
+                style={styles.textInput}
+                placeholder="Type your query"
+                multiline={true}
+                onChangeText={onTextChange}
+                ref={textInputRef}
+              ></TextInput>
+            </KeyboardAwareScrollView>
+          </View>
+          <View style={styles.textFunctionContainer}>
+            <Pressable onPress={handleEmail}>
+              <Icon name="paper-plane" size={22} color={"#EA4335"} />
+            </Pressable>
+          </View>
+        </>
+      )}
     </View>
   );
 };

@@ -1,26 +1,48 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Navbar from "../components/Navbar";
 import { Button, Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { signOut } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { doc, deleteDoc } from "firebase/firestore";
+import { currentuser } from "../redux/reducers/userReducer";
+import { logout } from "../redux/reducers/authReducer";
 
 const SettingsScreen = () => {
   const navigation = useNavigation();
+  const userDetails = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  // console.log(userDetails);
 
-  const logout = () => {
+  const signout = () => {
     // Sign out the user from Firebase
     try {
       AsyncStorage.clear();
       signOut(auth);
       console.log("User signed out");
+      dispatch(logout());
+      dispatch(currentuser({}));
       navigation.replace("Login");
     } catch (error) {
       console.error("Error signing out:", error);
     }
+  };
+
+  const deleteAccount = async () => {
+    const docId = userDetails.userId;
+    const docRef = doc(db, "users", "MICEgKgwNBgYx1Cl4fr7");
+    await deleteDoc(docRef);
+
+    Alert.alert("Account Deleted", "Sorry to see you go.", [
+      {
+        text: "OK",
+      },
+    ]);
+    signout();
   };
   return (
     <SafeAreaView style={styles.settingsContainer}>
@@ -50,17 +72,13 @@ const SettingsScreen = () => {
             <Text style={styles.iconText}>Help</Text>
           </View>
         </Pressable>
-        <Pressable
-          onPress={() => {
-            navigation.replace("Help");
-          }}
-        >
+        <Pressable onPress={deleteAccount}>
           <View style={styles.iconContainer}>
             <Icon style={styles.icon} name="delete" size={40} color="black" />
             <Text style={styles.iconText}>Delete your account</Text>
           </View>
         </Pressable>
-        <Pressable onPress={logout}>
+        <Pressable onPress={signout}>
           <View style={styles.iconContainer}>
             <Icon
               style={styles.icon}

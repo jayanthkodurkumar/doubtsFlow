@@ -66,7 +66,7 @@ STEPS FOR GOOGLE SIGNING BUG:
 
 1. Change of kotlinVersion and added necessary native google-signin dependancies inside app/build.gradle.
 2. gradle version set to 8.1 in gradle-wrapper props.
-3. all google-cloud api client id's removed.
+3. all google-cloud api client ids removed.
 4. add this to info.plist
 # <dict>
 #         <key>CFBundleURLSchemes</key>
@@ -74,3 +74,17 @@ STEPS FOR GOOGLE SIGNING BUG:
 #             <string>com.googleusercontent.apps.1039216558637-7lclgpiqtdjavcr4qqvunhrfdvcrptqt</string>
 #         </array>
 #     </dict>
+
+5. email permissions.
+
+# android: <uses-permission android:name="android.permission.INTERNET" />
+# ios:
+
+# <key>LSApplicationQueriesSchemes</key>
+# <array>
+#     <string>mailto</string>
+#     <string>ms-outlook</string>
+# </array>
+
+
+
