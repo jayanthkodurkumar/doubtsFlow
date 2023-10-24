@@ -26,7 +26,6 @@ const SettingsScreen = () => {
       console.log("User signed out");
       dispatch(logout());
       dispatch(currentuser({}));
-      navigation.replace("Login");
     } catch (error) {
       console.error("Error signing out:", error);
     }
@@ -34,7 +33,7 @@ const SettingsScreen = () => {
 
   const deleteAccount = async () => {
     const docId = userDetails.userId;
-    const docRef = doc(db, "users", "MICEgKgwNBgYx1Cl4fr7");
+    const docRef = doc(db, "users", docId);
     await deleteDoc(docRef);
 
     Alert.alert("Account Deleted", "Sorry to see you go.", [
@@ -42,6 +41,9 @@ const SettingsScreen = () => {
         text: "OK",
       },
     ]);
+    AsyncStorage.clear();
+    dispatch(currentuser({}));
+    navigation.replace("Login");
     signout();
   };
   return (

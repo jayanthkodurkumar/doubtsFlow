@@ -132,7 +132,7 @@ const HomeScreen = () => {
           ))}
         </View>
 
-        <Pressable
+        {/* <Pressable
           onPress={() => {
             // Sign out the user from Firebase
             try {
@@ -149,7 +149,7 @@ const HomeScreen = () => {
           }}
         >
           <Text>Sign Out</Text>
-        </Pressable>
+        </Pressable> */}
       </ScrollView>
       <View style={styles.navbarContainer}>
         <Navbar homeIcon={true} helpIcon={true} settingsIcon={true} />
