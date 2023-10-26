@@ -102,9 +102,11 @@ const LoginScreen = () => {
           profilePic: user.photoURL,
         };
         // this will trigger the login action inside our authReducer with payload userdata as argument
+
+        // console.log("before Dispatch" + JSON.stringify(userAccount));
         dispatch(login(userAccount));
         // navigation.navigate("Home");
-        // console.log("after Dispatch" + JSON.stringify(userAccount));
+        console.log("after Dispatch" + JSON.stringify(userAccount));
       } else {
         console.log("User is not authenticated");
       }

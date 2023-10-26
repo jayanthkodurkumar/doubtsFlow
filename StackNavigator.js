@@ -7,6 +7,7 @@ import HomeScreen from "./screens/HomeScreen";
 import HelpScreen from "./screens/HelpScreen";
 import SettingsScreen from "./screens/SettingsScreen";
 import ViewDoubtScreen from "./screens/ViewDoubtScreen";
+import ProfileScreen from "./screens/ProfileScreen";
 
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
@@ -38,6 +39,11 @@ const StackNavigator = () => {
         <Stack.Screen
           name="ViewDoubt"
           component={ViewDoubtScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Profile"
+          component={ProfileScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

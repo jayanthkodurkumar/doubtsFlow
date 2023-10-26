@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 // initial state of our slice
 const initialState = {
-  currentuser: {},
+  currentuser: null,
   error: null,
 };
 
@@ -12,7 +12,7 @@ const userSlice = createSlice({
   reducers: {
     currentuser: (state, action) => {
       state.currentuser = action.payload;
-      error = null;
+      state.error = null;
     },
   },
 });

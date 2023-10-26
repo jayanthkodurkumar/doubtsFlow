@@ -15,7 +15,7 @@ const authSlice = createSlice({
       error = null;
     },
     logout: (state, action) => {
-      user = action.payload;
+      state.user = {};
       error = null;
     },
   },

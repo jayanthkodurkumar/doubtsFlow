@@ -30,6 +30,7 @@ const HomeScreen = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       // console.log("user from store" + JSON.stringify(user));
+
       const uid = user.userId;
       const usersRef = doc(db, "users", uid);
 
@@ -43,6 +44,8 @@ const HomeScreen = () => {
       }
       setLoggedUser(userData);
       dispatch(currentuser(userData));
+      const use = useSelector((state) => state.currentuser.currentuser);
+      console.log(use);
       return userData;
     };
     const fetchData = async () => {
@@ -106,7 +109,10 @@ const HomeScreen = () => {
           <View style={styles.premiumIconContainer}>
             <Icon name="crown" size={24} color="gold" />
           </View>
-          <Pressable style={styles.profilepictureContainer}>
+          <Pressable
+            style={styles.profilepictureContainer}
+            onPress={() => navigation.navigate("Profile")}
+          >
             <Image
               style={styles.profilePic}
               source={{
@@ -131,28 +137,9 @@ const HomeScreen = () => {
             <Doubts key={index} home={true} doubt={value} />
           ))}
         </View>
-
-        {/* <Pressable
-          onPress={() => {
-            // Sign out the user from Firebase
-            try {
-              AsyncStorage.clear();
-              signOut(auth);
-              dispatch(logout());
-              dispatch(currentuser({}));
-              console.log("User signed out");
-
-              navigation.replace("Login");
-            } catch (error) {
-              console.error("Error signing out:", error);
-            }
-          }}
-        >
-          <Text>Sign Out</Text>
-        </Pressable> */}
       </ScrollView>
       <View style={styles.navbarContainer}>
-        <Navbar homeIcon={true} helpIcon={true} settingsIcon={true} />
+        <Navbar homeIcon={true} helpIcon={false} settingsIcon={true} />
       </View>
     </SafeAreaView>
   );

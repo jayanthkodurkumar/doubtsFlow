@@ -76,20 +76,17 @@ const SettingsScreen = () => {
         }}
       ></Pressable>
       <View style={styles.bodyContainer}>
-        <View style={styles.iconContainer}>
-          <Icon style={styles.icon} name="person" size={40} color="black" />
-          <Text style={styles.iconText}>Account Details</Text>
-        </View>
         <Pressable
           onPress={() => {
-            navigation.replace("Help");
+            navigation.navigate("Profile");
           }}
         >
           <View style={styles.iconContainer}>
-            <Icon style={styles.icon} name="headset" size={40} color="black" />
-            <Text style={styles.iconText}>Help</Text>
+            <Icon style={styles.icon} name="person" size={40} color="black" />
+            <Text style={styles.iconText}>Account Details</Text>
           </View>
         </Pressable>
+
         <Pressable onPress={deleteAccount}>
           <View style={styles.iconContainer}>
             <Icon style={styles.icon} name="delete" size={40} color="black" />
@@ -109,7 +106,7 @@ const SettingsScreen = () => {
         </Pressable>
       </View>
       <View style={styles.navbarContainer}>
-        <Navbar homeIcon={true} helpIcon={true} />
+        <Navbar homeIcon={true} />
       </View>
     </SafeAreaView>
   );
