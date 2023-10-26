@@ -106,9 +106,8 @@ const LoginScreen = () => {
 
         // console.log("before Dispatch" + JSON.stringify(userAccount));
         dispatch(login(userAccount));
-        if (userInfo) {
-          navigation.navigate("Home");
-        }
+
+        navigation.navigate("Home");
 
         // console.log("after Dispatch" + JSON.stringify(userAccount));
       } else {

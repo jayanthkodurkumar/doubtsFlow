@@ -73,18 +73,9 @@ STEPS FOR GOOGLE SIGNING BUG:
 #         <array>
 #             <string>com.googleusercontent.apps.1039216558637-7lclgpiqtdjavcr4qqvunhrfdvcrptqt</string>
 #         </array>
-#     </dict>
+# </dict>
 
-5. email permissions.
 
-# android: <uses-permission android:name="android.permission.INTERNET" />
-# ios:
-
-# <key>LSApplicationQueriesSchemes</key>
-# <array>
-#     <string>mailto</string>
-#     <string>ms-outlook</string>
-# </array>
 
 
 
