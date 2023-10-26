@@ -1,15 +1,8 @@
-import {
-  Alert,
-  Linking,
-  Pressable,
-  StyleSheet,
-  TextInput,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, TextInput, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import { auth, db } from "../firebase";
+import { db } from "../firebase";
 import {
   addDoc,
   arrayUnion,
@@ -19,11 +12,10 @@ import {
 } from "firebase/firestore";
 import { useSelector } from "react-redux";
 
-const TextBox = ({ post, help }) => {
+const TextBox = ({ post, user }) => {
   const userDetails = useSelector((state) => state.auth.user);
-  // useEffect(() => {
-  //   console.log("user from store" + JSON.stringify(userDetails));
-  // }, []);
+
+  // console.log("TEXT BOX:", user);
 
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
@@ -75,10 +67,6 @@ const TextBox = ({ post, help }) => {
       console.log(error);
     }
   };
-  // TODO: send email for help
-  handleEmail = () => {
-    console.log("email pressed");
-  };
 
   return (
     <View style={styles.textContainer}>
@@ -114,38 +102,6 @@ const TextBox = ({ post, help }) => {
 
             <Pressable onPress={addDoubt}>
               <Icon name="plus-circle" size={22} color={"#EA4335"} />
-            </Pressable>
-          </View>
-        </>
-      )}
-      {help && (
-        <>
-          <View style={styles.titleInputContainer}>
-            <KeyboardAwareScrollView>
-              <TextInput
-                style={styles.titleInput}
-                flex={1}
-                placeholder="Enter the subject"
-                multiline={true}
-                onChangeText={onTitleChange}
-                ref={titleInputRef}
-              ></TextInput>
-            </KeyboardAwareScrollView>
-          </View>
-          <View style={styles.textInputContainer}>
-            <KeyboardAwareScrollView>
-              <TextInput
-                style={styles.textInput}
-                placeholder="Type your query"
-                multiline={true}
-                onChangeText={onTextChange}
-                ref={textInputRef}
-              ></TextInput>
-            </KeyboardAwareScrollView>
-          </View>
-          <View style={styles.textFunctionContainer}>
-            <Pressable onPress={handleEmail}>
-              <Icon name="paper-plane" size={22} color={"#EA4335"} />
             </Pressable>
           </View>
         </>

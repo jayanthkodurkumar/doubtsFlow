@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { useNavigation } from "@react-navigation/native";
 import { Text } from "react-native-elements";
 
-const Navbar = ({ homeIcon, helpIcon, settingsIcon }) => {
+const Navbar = ({ homeIcon, settingsIcon }) => {
   const navigate = useNavigation();
   const HomeIcon = () => {
     return (
@@ -20,19 +20,7 @@ const Navbar = ({ homeIcon, helpIcon, settingsIcon }) => {
       </Pressable>
     );
   };
-  const HelpIcon = () => {
-    return (
-      <Pressable
-        onPress={() => {
-          navigate.navigate("Help");
-        }}
-      >
-        <Text>
-          <Icon style={styles.icon} name="headset" size={40} color="black" />
-        </Text>
-      </Pressable>
-    );
-  };
+
   const SettingsIcon = () => {
     return (
       <Pressable
@@ -49,7 +37,7 @@ const Navbar = ({ homeIcon, helpIcon, settingsIcon }) => {
   return (
     <View style={styles.navbarContainer}>
       {homeIcon && <HomeIcon />}
-      {helpIcon && <HelpIcon />}
+
       {settingsIcon && <SettingsIcon />}
     </View>
   );
