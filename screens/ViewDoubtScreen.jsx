@@ -29,7 +29,7 @@ const ViewDoubtScreen = ({ route }) => {
         </Text>
         <Comments style={styles.comments} currentDoubt={doubts} />
       </ScrollView>
-      <Navbar homeIcon={true} settingsIcon={true} helpIcon={true} />
+      <Navbar homeIcon={true} settingsIcon={true} />
     </SafeAreaView>
   );
 };

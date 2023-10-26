@@ -17,6 +17,7 @@ import { login } from "../redux/reducers/authReducer";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { currentuser } from "../redux/reducers/userReducer";
 import { useNavigation } from "@react-navigation/native";
+import SettingsScreen from "./SettingsScreen";
 
 const LoginScreen = () => {
   const [userInfo, setUserInfo] = useState();
@@ -58,6 +59,7 @@ const LoginScreen = () => {
 
       signInWithCredential(auth, credential);
       console.log("auth success");
+      //  navigation.navigate("Home");
     } catch (error) {
       console.error("Google Sign-In Error:", error);
       Alert.alert("Google Sign-In Failed");
@@ -93,7 +95,6 @@ const LoginScreen = () => {
         await createUser(user.uid, user.email, user.photoURL, user.displayName);
         await AsyncStorage.setItem("@user", JSON.stringify(user));
         // console.log(user);
-        let userData = {};
         // console.log("before dispatch" + JSON.stringify(userData));
         userAccount = {
           userId: user.uid,
@@ -105,8 +106,11 @@ const LoginScreen = () => {
 
         // console.log("before Dispatch" + JSON.stringify(userAccount));
         dispatch(login(userAccount));
-        // navigation.navigate("Home");
-        console.log("after Dispatch" + JSON.stringify(userAccount));
+        if (userInfo) {
+          navigation.navigate("Home");
+        }
+
+        // console.log("after Dispatch" + JSON.stringify(userAccount));
       } else {
         console.log("User is not authenticated");
       }
@@ -115,9 +119,7 @@ const LoginScreen = () => {
     return () => unSubscribe();
   }, []);
 
-  return userInfo ? (
-    <HomeScreen />
-  ) : (
+  return (
     <SafeAreaView style={styles.loginScreen}>
       <View style={styles.title}>
         <Text style={styles.titleTextPart1}>DOUBTS</Text>

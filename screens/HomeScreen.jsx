@@ -26,7 +26,7 @@ const HomeScreen = () => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   // TODO: useEffect to fetch user data from users collection
-  const [loggedUser, setLoggedUser] = useState([]);
+  const [loggedUser, setLoggedUser] = useState(null);
   useEffect(() => {
     const fetchUsers = async () => {
       // console.log("user from store" + JSON.stringify(user));
@@ -36,28 +36,24 @@ const HomeScreen = () => {
 
       const userDoc = await getDoc(usersRef);
 
-      const userData = [];
-
       if (userDoc.exists()) {
-        const dataToPush = userDoc.data();
-        userData.push(dataToPush);
+        const userData = userDoc.data();
+        setLoggedUser(userData);
+        dispatch(currentuser(userData));
       }
-      setLoggedUser(userData);
-      dispatch(currentuser(userData));
-      const use = useSelector((state) => state.currentuser.currentuser);
-      console.log(use);
-      return userData;
+
+      // return userData;
     };
-    const fetchData = async () => {
-      const userData = await fetchUsers();
-    };
-    fetchData();
+
+    fetchUsers();
+
     return () => {
-      // clean up to prevent infinite fetchof user
+      // clean up to prevent infinite fetch of user
     };
   }, []);
-  // console.log("home user", loggedUser);
-  // console.log("render");
+  // data is null for the first time I mount the component
+  // subsequent re-render of the homescreen works as expected.
+  console.log("home user", loggedUser);
 
   // TODO: useEffect to fetch doubts and update state
   const [doubtsArray, setDoubtsArray] = useState([]);
@@ -131,7 +127,9 @@ const HomeScreen = () => {
         <Headerbar user={loggedUser} />
       </View>
       <ScrollView style={styles.bodyContainer}>
-        <TextBox post={true} />
+        {/* Conditionally rendering texbox if there is a loggedUser */}
+        {loggedUser !== null && <TextBox post={true} user={loggedUser} />}
+        {/*  */}
         <View style={styles.doubtsContainer}>
           {doubtsArray.map((value, index) => (
             <Doubts key={index} home={true} doubt={value} />
@@ -139,7 +137,7 @@ const HomeScreen = () => {
         </View>
       </ScrollView>
       <View style={styles.navbarContainer}>
-        <Navbar homeIcon={true} helpIcon={false} settingsIcon={true} />
+        <Navbar homeIcon={true} settingsIcon={true} />
       </View>
     </SafeAreaView>
   );
