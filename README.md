@@ -9,7 +9,7 @@
 
 a) I get an error thrown with the exception ""NSInvalidArgumentException" error."  
 
-b) I manually type the following to the info.plist file inside "ios/doubtflow/info.plist" at Line number 40 the following command to make it work.  
+b) I manually type the following into the info.plist file inside "ios/doubtflow/info.plist" at Line number 40 the following command to make it work.  
 
 ```
 <dict>  
