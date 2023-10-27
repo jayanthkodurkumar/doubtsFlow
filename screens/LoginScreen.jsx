@@ -81,6 +81,7 @@ const LoginScreen = () => {
         totalComments: 0,
         isPremium: false,
         doubtsID: [],
+        id: userId,
       });
       console.log("Account successfully created!!!");
     }

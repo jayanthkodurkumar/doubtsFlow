@@ -15,8 +15,10 @@ import { logout } from "../redux/reducers/authReducer";
 const SettingsScreen = () => {
   const navigation = useNavigation();
   const userDetails = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.currentuser.currentuser);
   const dispatch = useDispatch();
   // console.log(userDetails);
+  console.log("settings screen:", user);
 
   const signout = () => {
     // Sign out the user from Firebase
@@ -86,7 +88,18 @@ const SettingsScreen = () => {
             <Text style={styles.iconText}>Account Details</Text>
           </View>
         </Pressable>
-
+        {user.role === "admin" && (
+          <Pressable
+            onPress={() => {
+              navigation.navigate("Viewaccount");
+            }}
+          >
+            <View style={styles.iconContainer}>
+              <Icon style={styles.icon} name="list" size={40} color="black" />
+              <Text style={styles.iconText}>View Accounts</Text>
+            </View>
+          </Pressable>
+        )}
         <Pressable onPress={deleteAccount}>
           <View style={styles.iconContainer}>
             <Icon style={styles.icon} name="delete" size={40} color="black" />
