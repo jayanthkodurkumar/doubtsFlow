@@ -8,13 +8,22 @@ const Doubts = ({ home, viewDoubt, doubt }) => {
   const handleReadMore = () => {
     navigation.navigate("ViewDoubt", { doubt: doubt });
   };
+  const role = doubt.role;
+  // console.log(role);
   // TODO: home page doubts component
   const Home = () => {
     return (
       <View style={homestyles.doubtContainers}>
         <View style={homestyles.doubtBox}>
           <View style={homestyles.doubtTitleContainer}>
-            <Text style={homestyles.doubtTitle}> {doubt.title}</Text>
+            {doubt && role === "admin" ? (
+              <Text style={[homestyles.doubtTitle, { color: "red" }]}>
+                {" "}
+                {doubt.title}
+              </Text>
+            ) : (
+              <Text style={homestyles.doubtTitle}> {doubt.title}</Text>
+            )}
           </View>
 
           <View style={homestyles.doubtDetails}>
@@ -110,7 +119,14 @@ const Doubts = ({ home, viewDoubt, doubt }) => {
       <View style={viewdoubtstyles.doubtContainers}>
         <View style={viewdoubtstyles.doubtBox}>
           <View style={viewdoubtstyles.doubtTitleContainer}>
-            <Text style={viewdoubtstyles.doubtTitle}> {doubt[0].title}</Text>
+            {doubt && doubt[0].role === "admin" ? (
+              <Text style={[viewdoubtstyles.doubtTitle, { color: "red" }]}>
+                {" "}
+                {doubt[0].title}
+              </Text>
+            ) : (
+              <Text style={viewdoubtstyles.doubtTitle}> {doubt[0].title}</Text>
+            )}
           </View>
 
           <View style={viewdoubtstyles.doubtDetails}>

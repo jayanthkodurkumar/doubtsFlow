@@ -23,7 +23,7 @@ const Comments = ({ currentDoubt }) => {
   // console.log("comments array: ", currentDoubt[0].comments);
 
   const user = useSelector((state) => state.auth.user);
-  // console.log(user);
+  console.log(user);
   const [comment, setComment] = useState("");
 
   const commentInputRef = useRef();
@@ -72,9 +72,19 @@ const Comments = ({ currentDoubt }) => {
         name: user.name,
         content: comment,
         isCorrect: false,
+        userID: user.userId,
       };
-
       await updateDoc(docRef, { comments: arrayUnion(userComment) });
+
+      const userRef = doc(db, "users", user.userId);
+      const userDoc = await getDoc(userRef);
+      const userData = userDoc.data();
+
+      // const updateuser = userRef.find((account) => account.id === user.userId);
+
+      await updateDoc(userRef, {
+        totalComments: userData.totalComments + 1,
+      });
 
       console.log("Comment added successfully");
       console.log("updated post:", currentDoubt[0].comments);

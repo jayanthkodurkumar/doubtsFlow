@@ -8,6 +8,7 @@ import {
   arrayUnion,
   collection,
   doc,
+  getDoc,
   updateDoc,
 } from "firebase/firestore";
 import { useSelector } from "react-redux";
@@ -15,7 +16,7 @@ import { useSelector } from "react-redux";
 const TextBox = ({ post, user }) => {
   const userDetails = useSelector((state) => state.auth.user);
 
-  // console.log("TEXT BOX:", user);
+  console.log("TEXT BOX:", user);
 
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
@@ -45,6 +46,7 @@ const TextBox = ({ post, user }) => {
         upvotes: 0,
         totalComments: 0,
         comments: [],
+        role: user.role,
       });
       console.log("Document added with ID: ", doubtsRef.id);
 
@@ -58,6 +60,9 @@ const TextBox = ({ post, user }) => {
 
       const userRef = doc(usersRef, userDetails.userId);
       await updateDoc(userRef, { doubtsID: arrayUnion(doubtsRef.id) });
+      const userDoc = await getDoc(userRef);
+      const userData = userDoc.data();
+      await updateDoc(userRef, { totalDoubts: userData.doubtsID.length });
 
       setText("");
       setTitle("");
@@ -73,27 +78,52 @@ const TextBox = ({ post, user }) => {
       {post && (
         <>
           <View style={styles.titleInputContainer}>
-            <KeyboardAwareScrollView>
-              <TextInput
-                style={styles.titleInput}
-                flex={1}
-                placeholder="SUGGEST A TITLE"
-                multiline={true}
-                onChangeText={onTitleChange}
-                ref={titleInputRef}
-              ></TextInput>
-            </KeyboardAwareScrollView>
+            {user && user?.role === "admin" ? (
+              <KeyboardAwareScrollView>
+                <TextInput
+                  style={[styles.titleInput, { color: "red" }]}
+                  flex={1}
+                  placeholder="ADD ANNOUNCEMENT"
+                  multiline={true}
+                  onChangeText={onTitleChange}
+                  ref={titleInputRef}
+                ></TextInput>
+              </KeyboardAwareScrollView>
+            ) : (
+              <KeyboardAwareScrollView>
+                <TextInput
+                  style={styles.titleInput}
+                  flex={1}
+                  placeholder="SUGGEST A TITLE"
+                  multiline={true}
+                  onChangeText={onTitleChange}
+                  ref={titleInputRef}
+                ></TextInput>
+              </KeyboardAwareScrollView>
+            )}
           </View>
           <View style={styles.textInputContainer}>
-            <KeyboardAwareScrollView>
-              <TextInput
-                style={styles.textInput}
-                placeholder="HAVE A DOUBT?"
-                multiline={true}
-                onChangeText={onTextChange}
-                ref={textInputRef}
-              ></TextInput>
-            </KeyboardAwareScrollView>
+            {user && user?.role === "admin" ? (
+              <KeyboardAwareScrollView>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder=""
+                  multiline={true}
+                  onChangeText={onTextChange}
+                  ref={textInputRef}
+                ></TextInput>
+              </KeyboardAwareScrollView>
+            ) : (
+              <KeyboardAwareScrollView>
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="HAVE A DOUBT?"
+                  multiline={true}
+                  onChangeText={onTextChange}
+                  ref={textInputRef}
+                ></TextInput>
+              </KeyboardAwareScrollView>
+            )}
           </View>
           <View style={styles.textFunctionContainer}>
             <Pressable>
