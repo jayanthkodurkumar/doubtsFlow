@@ -13,8 +13,10 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { ScrollView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const ViewAccounts = () => {
+  const navigation = useNavigation();
   const [users, setUsers] = useState([]);
   useEffect(() => {
     const usersRef = collection(db, "users");

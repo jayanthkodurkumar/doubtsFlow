@@ -8,6 +8,7 @@ import {
   arrayUnion,
   collection,
   doc,
+  getDoc,
   updateDoc,
 } from "firebase/firestore";
 import { useSelector } from "react-redux";
@@ -59,6 +60,9 @@ const TextBox = ({ post, user }) => {
 
       const userRef = doc(usersRef, userDetails.userId);
       await updateDoc(userRef, { doubtsID: arrayUnion(doubtsRef.id) });
+      const userDoc = await getDoc(userRef);
+      const userData = userDoc.data();
+      await updateDoc(userRef, { totalDoubts: userData.doubtsID.length });
 
       setText("");
       setTitle("");

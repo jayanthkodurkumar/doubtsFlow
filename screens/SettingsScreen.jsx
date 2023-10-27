@@ -1,5 +1,5 @@
 import { Alert, Pressable, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Navbar from "../components/Navbar";
 import { Button, Icon } from "react-native-elements";
@@ -18,7 +18,37 @@ const SettingsScreen = () => {
   const user = useSelector((state) => state.currentuser.currentuser);
   const dispatch = useDispatch();
   // console.log(userDetails);
-  console.log("settings screen:", user);
+
+  // TODO: useEffect to fetch user data from users collection
+  const [loggedUser, setLoggedUser] = useState(null);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      // console.log("user from store" + JSON.stringify(user));
+
+      const uid = userDetails.userId;
+      const usersRef = doc(db, "users", uid);
+
+      const userDoc = await getDoc(usersRef);
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        setLoggedUser(userData);
+        dispatch(currentuser(userData));
+      }
+
+      // return userData;
+    };
+
+    fetchUsers();
+
+    return () => {
+      // clean up to prevent infinite fetch of user
+    };
+  }, []);
+  // data is null for the first time I mount the component
+  // subsequent re-render of the homescreen works as expected.
+
+  console.log("settings screen:", loggedUser);
 
   const signout = () => {
     // Sign out the user from Firebase
@@ -88,7 +118,7 @@ const SettingsScreen = () => {
             <Text style={styles.iconText}>Account Details</Text>
           </View>
         </Pressable>
-        {user.role === "admin" && (
+        {user && user?.role === "admin" && (
           <Pressable
             onPress={() => {
               navigation.navigate("Viewaccount");
@@ -100,12 +130,15 @@ const SettingsScreen = () => {
             </View>
           </Pressable>
         )}
-        <Pressable onPress={deleteAccount}>
-          <View style={styles.iconContainer}>
-            <Icon style={styles.icon} name="delete" size={40} color="black" />
-            <Text style={styles.iconText}>Delete your account</Text>
-          </View>
-        </Pressable>
+        {user && user?.role === "user" && (
+          <Pressable onPress={deleteAccount}>
+            <View style={styles.iconContainer}>
+              <Icon style={styles.icon} name="delete" size={40} color="black" />
+              <Text style={styles.iconText}>Delete your account</Text>
+            </View>
+          </Pressable>
+        )}
+
         <Pressable onPress={signout}>
           <View style={styles.iconContainer}>
             <Icon
