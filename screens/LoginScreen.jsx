@@ -15,7 +15,6 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/reducers/authReducer";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { currentuser } from "../redux/reducers/userReducer";
 import { useNavigation } from "@react-navigation/native";
 import SettingsScreen from "./SettingsScreen";
 

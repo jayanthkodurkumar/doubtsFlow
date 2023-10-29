@@ -1,3 +1,5 @@
+console.warn = function () {};
+
 import {
   Alert,
   Pressable,
@@ -21,7 +23,6 @@ import Navbar from "../components/Navbar";
 import { Image } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { useNavigation } from "@react-navigation/native";
-import { currentuser } from "../redux/reducers/userReducer";
 import { db } from "../firebase";
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -53,13 +54,12 @@ const ProfileScreen = () => {
     };
   }, []);
   console.log(loggedUser);
-  const code = () => {
-    const admincode = "12345";
+  const becomeAdmin = () => {
     const usersRef = collection(db, "users");
     console.log("button pressed");
     const userRef = doc(usersRef, loggedUser[0].id);
     if (adminCode === "12345") {
-      updateDoc(userRef, { role: "admin" });
+      updateDoc(userRef, { role: "admin", isPremium: true });
       Alert.alert("Success", "Congratulations! You are now an admin.", [
         { text: "OK", onPress: () => navigation.navigate("Home") },
       ]);
@@ -110,29 +110,35 @@ const ProfileScreen = () => {
             <Text style={styles.value}>{userInfo.totalComments}</Text>
             <Text style={styles.key}>Luddies </Text>
             <Text style={styles.value}>{userInfo.luddies}</Text>
-            <Text style={{ fontSize: 14, fontWeight: "bold" }}>
-              ENTER THE ADMIN CODE TO SWITCH TO ADMIN MODE
-            </Text>
-            <TextInput
-              placeholder="Your Code"
-              onChangeText={(enteredText) => {
-                setAdminCode(enteredText);
-              }}
-              style={styles.value}
-            ></TextInput>
-            <Pressable
-              onPress={() => code()}
-              style={{
-                backgroundColor: "#ea4335",
-                alignItems: "center",
-                justifyContent: "center",
-                paddingVertical: 10,
-                paddingHorizontal: 20,
-                borderRadius: 5,
-              }}
-            >
-              <Text style={{ color: "white", fontWeight: "bold" }}>Submit</Text>
-            </Pressable>
+            {userInfo.role !== "admin" && (
+              <>
+                <Text style={{ fontSize: 14, fontWeight: "bold" }}>
+                  ENTER THE ADMIN CODE TO SWITCH TO ADMIN MODE
+                </Text>
+                <TextInput
+                  placeholder="Your Code"
+                  onChangeText={(enteredText) => {
+                    setAdminCode(enteredText);
+                  }}
+                  style={styles.value}
+                ></TextInput>
+                <Pressable
+                  onPress={() => becomeAdmin()}
+                  style={{
+                    backgroundColor: "#ea4335",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    borderRadius: 5,
+                  }}
+                >
+                  <Text style={{ color: "white", fontWeight: "bold" }}>
+                    Submit
+                  </Text>
+                </Pressable>
+              </>
+            )}
           </View>
         ))}
       </View>
