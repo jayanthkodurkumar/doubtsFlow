@@ -42,6 +42,16 @@ const ViewAccounts = () => {
     await updateDoc(userRef, {
       luddies: updateuser.luddies + 1,
     });
+
+    const userDoc = await getDoc(userRef);
+    console.log(userDoc.data());
+    const updateduser = userDoc.data();
+
+    if (updateduser.luddies === 11) {
+      await updateDoc(userRef, {
+        isPremium: true,
+      });
+    }
     console.log("Awarded 1 luddy");
   };
   return (

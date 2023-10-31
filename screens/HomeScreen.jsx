@@ -132,7 +132,7 @@ const HomeScreen = () => {
         {/*  */}
         <View style={styles.doubtsContainer}>
           {doubtsArray.map((value, index) => (
-            <Doubts key={index} home={true} doubt={value} />
+            <Doubts key={index} home={true} doubt={value} user={loggedUser} />
           ))}
         </View>
       </ScrollView>
