@@ -1,8 +1,21 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/core";
+import { Icon } from "react-native-elements";
+import { useSelector } from "react-redux";
+import {
+  arrayRemove,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
+import { db } from "../firebase";
 
-const Doubts = ({ home, viewDoubt, doubt }) => {
+const Doubts = ({ home, viewDoubt, doubt, user }) => {
   const navigation = useNavigation();
 
   const handleReadMore = () => {
@@ -115,20 +128,111 @@ const Doubts = ({ home, viewDoubt, doubt }) => {
   // TODO: view a doubt page component
   const ViewDoubt = () => {
     // console.log(doubt[0]);
+    const [loggedUser, setLoggedUser] = useState(null);
+    const user = useSelector((state) => state.auth.user);
+
+    useEffect(() => {
+      const fetchUsers = async () => {
+        // console.log("user from store" + JSON.stringify(user));
+        const userData = [];
+        const uid = user.userId;
+        const usersRef = doc(db, "users", uid);
+
+        const userDoc = await getDoc(usersRef);
+
+        if (userDoc.exists()) {
+          const dataToPush = userDoc.data();
+          userData.push(dataToPush);
+        }
+        setLoggedUser(userData);
+      };
+      const fetchData = async () => {
+        const userData = await fetchUsers();
+      };
+      fetchData();
+      return () => {
+        // clean up to prevent infinite fetchof user
+      };
+    }, []);
+    console.log("logged user on view doubt", loggedUser);
+    const deleteDoubt = async (doubtId) => {
+      try {
+        const updatedDoubtsID = loggedUser[0].doubtsID.filter(
+          (id) => id !== doubtId
+        );
+        const userRef = doc(db, "users", loggedUser[0].id);
+
+        await updateDoc(userRef, { doubtsID: updatedDoubtsID });
+        const doubtRef = doc(db, "doubts", doubtId);
+        await deleteDoc(doubtRef);
+
+        console.log("post deleted");
+        navigation.navigate("Home");
+      } catch (error) {
+        console.log(error);
+      }
+    };
     return (
       <View style={viewdoubtstyles.doubtContainers}>
         <View style={viewdoubtstyles.doubtBox}>
           <View style={viewdoubtstyles.doubtTitleContainer}>
             {doubt && doubt[0].role === "admin" ? (
-              <Text style={[viewdoubtstyles.doubtTitle, { color: "red" }]}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+
+                  width: "100%",
+                }}
+              >
+                <Text
+                  style={[
+                    viewdoubtstyles.doubtTitle,
+                    {
+                      color: "red",
+                      flex: 0.99,
+                      justifyContent: "flex-start",
+                    },
+                  ]}
+                >
+                  {" "}
+                  {doubt[0].title}
+                </Text>
+              </View>
+            ) : (
+              <Text
+                style={[
+                  viewdoubtstyles.doubtTitle,
+                  {
+                    color: "black",
+                    flex: 0.99,
+                    justifyContent: "flex-start",
+                  },
+                ]}
+              >
                 {" "}
                 {doubt[0].title}
               </Text>
-            ) : (
-              <Text style={viewdoubtstyles.doubtTitle}> {doubt[0].title}</Text>
             )}
-          </View>
 
+            {doubt &&
+              loggedUser &&
+              (loggedUser[0].role === "admin" ||
+                loggedUser[0].id === doubt[0].userId) && (
+                <Pressable onPress={() => deleteDoubt(doubt[0].doubtID)}>
+                  <View style={viewdoubtstyles.iconContainer}>
+                    <Icon
+                      style={viewdoubtstyles.icon}
+                      name="delete"
+                      size={30}
+                      color="red"
+                    />
+                  </View>
+                </Pressable>
+              )}
+          </View>
+          {/* // loggedUser[0]?.id === doubt[0]?.userId) && */}
           <View style={viewdoubtstyles.doubtDetails}>
             <View style={{ flexDirection: "row" }}>
               <Text
@@ -179,6 +283,7 @@ const viewdoubtstyles = StyleSheet.create({
   doubtTitleContainer: {
     alignItems: "center",
     justifyContent: "center",
+    flexDirection: "row",
   },
   doubtTitle: {
     fontSize: 32,
@@ -200,16 +305,11 @@ const viewdoubtstyles = StyleSheet.create({
     justifyContent: "center",
     textAlign: "justify",
   },
-  readmore: {
-    height: 40,
-    borderRadius: 18,
-    marginTop: 10,
-    backgroundColor: "#EA4335",
+  iconContainer: {
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-  },
-  readmoreText: {
-    color: "white",
-    fontSize: 18,
+
+    flex: 0.2,
   },
 });
