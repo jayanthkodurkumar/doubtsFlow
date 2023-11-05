@@ -12,21 +12,35 @@ const ViewDoubtScreen = ({ route }) => {
   // console.log(doubts);
 
   // Check if doubt is defined before logging
-
+  console.log("VD", doubts);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
         <Doubts viewDoubt={true} doubt={doubts} style={styles.doubts} />
-        <Text
-          style={{
-            fontSize: 16,
-            fontWeight: "700",
-            marginLeft: 14,
-            marginVertical: 10,
-          }}
-        >
-          Add Comments
-        </Text>
+        {doubts && doubts[0]?.isSolved ? (
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "700",
+              marginLeft: 14,
+              marginVertical: 10,
+            }}
+          >
+            Doubt Solved
+          </Text>
+        ) : (
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "700",
+              marginLeft: 14,
+              marginVertical: 10,
+            }}
+          >
+            Add Comments
+          </Text>
+        )}
+
         <Comments style={styles.comments} currentDoubt={doubts} />
       </ScrollView>
       <Navbar homeIcon={true} settingsIcon={true} />

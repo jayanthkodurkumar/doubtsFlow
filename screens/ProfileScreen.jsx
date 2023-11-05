@@ -53,10 +53,10 @@ const ProfileScreen = () => {
       // clean up to prevent infinite fetchof user
     };
   }, []);
-  console.log(loggedUser);
+  // console.log(loggedUser);
   const becomeAdmin = () => {
     const usersRef = collection(db, "users");
-    console.log("button pressed");
+    // console.log("button pressed");
     const userRef = doc(usersRef, loggedUser[0].id);
     if (adminCode === "12345") {
       updateDoc(userRef, { role: "admin", isPremium: true });
@@ -94,7 +94,11 @@ const ProfileScreen = () => {
           }}
         />
         <View style={styles.premiumIconContainer}>
-          <Icon type="font-awesome" name="crown" size={24} color="gold" />
+          {loggedUser[0]?.isPremium ? (
+            <Icon name="crown" size={24} color="gold" />
+          ) : (
+            <Icon name="crown" size={24} color="grey" />
+          )}
         </View>
       </View>
       <View style={styles.bodyContainer}>

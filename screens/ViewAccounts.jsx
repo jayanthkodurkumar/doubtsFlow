@@ -44,7 +44,7 @@ const ViewAccounts = () => {
     });
 
     const userDoc = await getDoc(userRef);
-    console.log(userDoc.data());
+    // console.log(userDoc.data());
     const updateduser = userDoc.data();
 
     if (updateduser.luddies === 11) {
@@ -52,7 +52,7 @@ const ViewAccounts = () => {
         isPremium: true,
       });
     }
-    console.log("Awarded 1 luddy");
+    // console.log("Awarded 1 luddy");
   };
   return (
     <SafeAreaView style={styles.vaContainer}>

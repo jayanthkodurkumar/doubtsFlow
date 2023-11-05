@@ -48,7 +48,7 @@ const SettingsScreen = () => {
   // data is null for the first time I mount the component
   // subsequent re-render of the homescreen works as expected.
 
-  console.log("settings screen:", loggedUser);
+  // console.log("settings screen:", loggedUser);
 
   const signout = () => {
     // Sign out the user from Firebase
@@ -74,7 +74,7 @@ const SettingsScreen = () => {
     const docRef = doc(db, "users", docId);
     const userData = await getDoc(docRef);
     const posts = userData.data().doubtsID;
-    console.log(posts);
+    // console.log(posts);
     const doubtsRef = collection(db, "doubts");
     for (let i = 0; i < posts.length; i++) {
       const id = posts[i];
