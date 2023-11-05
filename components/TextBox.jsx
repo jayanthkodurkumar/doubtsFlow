@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 const TextBox = ({ post, user }) => {
   const userDetails = useSelector((state) => state.auth.user);
 
-  console.log("TEXT BOX:", user);
+  // console.log("TEXT BOX:", user);
 
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
@@ -47,8 +47,9 @@ const TextBox = ({ post, user }) => {
         totalComments: 0,
         comments: [],
         role: user.role,
+        isSolved: false,
       });
-      console.log("Document added with ID: ", doubtsRef.id);
+      // console.log("Document added with ID: ", doubtsRef.id);
 
       const addId = {
         doubtID: doubtsRef.id,

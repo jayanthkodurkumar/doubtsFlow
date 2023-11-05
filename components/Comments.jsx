@@ -17,13 +17,38 @@ import { db } from "../firebase";
 import { useSelector } from "react-redux";
 
 const Comments = ({ currentDoubt }) => {
+  const [loggedUser, setLoggedUser] = useState(null);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      // console.log("user from store" + JSON.stringify(user));
+
+      const uid = user.userId;
+      const usersRef = doc(db, "users", uid);
+
+      const userDoc = await getDoc(usersRef);
+
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        setLoggedUser(userData);
+        dispatch(currentuser(userData));
+      }
+
+      // return userData;
+    };
+
+    fetchUsers();
+
+    return () => {
+      // clean up to prevent infinite fetch of user
+    };
+  }, []);
   const docId = currentDoubt[0].doubtID;
 
-  console.log("doubt on comments component", currentDoubt);
+  // console.log("doubt on comments component", currentDoubt);
   // console.log("comments array: ", currentDoubt[0].comments);
 
   const user = useSelector((state) => state.auth.user);
-  console.log(user);
+  // console.log(user);
   const [comment, setComment] = useState("");
 
   const commentInputRef = useRef();
@@ -40,7 +65,7 @@ const Comments = ({ currentDoubt }) => {
     const doubtsRef = collection(db, "doubts");
 
     const docRef = doc(doubtsRef, docId);
-    console.log(docRef);
+    // console.log(docRef);
     const unsubscribe = onSnapshot(docRef, (docSnapshot) => {
       const data = docSnapshot.data();
       if (data && data.comments) {
@@ -55,7 +80,7 @@ const Comments = ({ currentDoubt }) => {
   }, []);
   // console.
 
-  console.log("new comments array", commentsArray);
+  // console.log("new comments array", commentsArray);
   // TODO: add a doubt function
   const len = commentsArray.length;
   const addComment = async () => {
@@ -86,8 +111,8 @@ const Comments = ({ currentDoubt }) => {
         totalComments: userData.totalComments + 1,
       });
 
-      console.log("Comment added successfully");
-      console.log("updated post:", currentDoubt[0].comments);
+      // console.log("Comment added successfully");
+      // console.log("updated post:", currentDoubt[0].comments);
       setComment("");
 
       // Check if the ref is not null before calling clear
@@ -100,12 +125,52 @@ const Comments = ({ currentDoubt }) => {
   };
 
   var commentsArrayLength = commentsArray.length;
+
+  // fetchcomment
+  const findComment = (commentID) => {
+    const comment = commentsArray.find((comment) => comment.id === commentID);
+    if (comment) {
+      return comment;
+    }
+  };
+  const markCorrect = async (commentID) => {
+    const comment = findComment(commentID);
+
+    if (comment) {
+      const changedCorrect = !comment.isCorrect;
+
+      const doubtsRef = collection(db, "doubts");
+      const docRef = doc(doubtsRef, docId);
+
+      const currentComment = commentsArray.findIndex(
+        (cmt) => cmt.id === commentID
+      );
+
+      const updatedCommentsArray = [...commentsArray];
+      updatedCommentsArray[currentComment].isCorrect = changedCorrect;
+
+      await updateDoc(docRef, { comments: updatedCommentsArray });
+    }
+  };
+
   const ViewComments = () => {
     return (
       <ScrollView style={styles.viewCommentcontainer}>
         {commentsArrayLength > 0 ? (
           commentsArray.map((comment) => (
             <View key={comment.id} style={styles.individualComment}>
+              <Pressable onPress={() => markCorrect(comment.id)}>
+                <View>
+                  {loggedUser && loggedUser?.role === "admin" && (
+                    <Icon
+                      name="check"
+                      type="font-awesome"
+                      size={30}
+                      color="green"
+                    />
+                  )}
+                </View>
+              </Pressable>
               <Text style={styles.commentText}>{comment.content}</Text>
               <View
                 style={{
@@ -145,24 +210,27 @@ const Comments = ({ currentDoubt }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={styles.commentContainer}>
-        <View style={styles.commentInputContainer}>
-          <KeyboardAwareScrollView>
-            <TextInput
-              style={styles.commentInput}
-              placeholder="ADD A COMMENT..."
-              multiline={true}
-              onChangeText={onCommentChange}
-              ref={commentInputRef}
-            ></TextInput>
-          </KeyboardAwareScrollView>
+      {currentDoubt && currentDoubt[0]?.isSolved !== true && (
+        <View style={styles.commentContainer}>
+          <View style={styles.commentInputContainer}>
+            <KeyboardAwareScrollView>
+              <TextInput
+                style={styles.commentInput}
+                placeholder="ADD A COMMENT..."
+                multiline={true}
+                onChangeText={onCommentChange}
+                ref={commentInputRef}
+              ></TextInput>
+            </KeyboardAwareScrollView>
+          </View>
+          <View style={styles.commentFunctionContainer}>
+            <Pressable onPress={addComment}>
+              <Icon name="add-comment" size={22} color={"#808080"} />
+            </Pressable>
+          </View>
         </View>
-        <View style={styles.commentFunctionContainer}>
-          <Pressable onPress={addComment}>
-            <Icon name="add-comment" size={22} color={"#808080"} />
-          </Pressable>
-        </View>
-      </View>
+      )}
+
       <Text
         style={{
           fontSize: 16,

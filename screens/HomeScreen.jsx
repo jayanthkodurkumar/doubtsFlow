@@ -53,7 +53,7 @@ const HomeScreen = () => {
   }, []);
   // data is null for the first time I mount the component
   // subsequent re-render of the homescreen works as expected.
-  console.log("home user", loggedUser);
+  // console.log("home user", loggedUser);
 
   // TODO: useEffect to fetch doubts and update state
   const [doubtsArray, setDoubtsArray] = useState([]);
@@ -66,8 +66,15 @@ const HomeScreen = () => {
       snapshot.forEach((doc) => {
         data.push(doc.data());
       });
-      setDoubtsArray(data);
-      return data;
+
+      const sortedData = data.slice().sort((a, b) => {
+        const date1 = new Date(a.datePosted);
+        const date2 = new Date(b.datePosted);
+        return date2 - date1;
+      });
+      // console.log(sortedData);
+      setDoubtsArray(sortedData);
+      return sortedData;
     };
     fetchDoubts();
   }, []);
@@ -81,7 +88,13 @@ const HomeScreen = () => {
       querySnapshot.forEach((doc) => {
         data.push(doc.data());
       });
-      setDoubtsArray(data);
+      const sortedData = data.slice().sort((a, b) => {
+        const date1 = new Date(a.datePosted);
+        const date2 = new Date(b.datePosted);
+        return date2 - date1;
+      });
+      // console.log(sortedData);
+      setDoubtsArray(sortedData);
     });
 
     // clean up to stop getting data from firestore after homescreen component unmounts
@@ -103,7 +116,11 @@ const HomeScreen = () => {
         </View>
         <View style={styles.rightContainer}>
           <View style={styles.premiumIconContainer}>
-            <Icon name="crown" size={24} color="gold" />
+            {loggedUser && loggedUser?.isPremium ? (
+              <Icon name="crown" size={24} color="gold" />
+            ) : (
+              <Icon name="crown" size={24} color="grey" />
+            )}
           </View>
           <Pressable
             style={styles.profilepictureContainer}
@@ -120,7 +137,7 @@ const HomeScreen = () => {
       </View>
     );
   };
-
+  // console.log(doubtsArray);
   return (
     <SafeAreaView style={styles.homeScreenContainer}>
       <View style={styles.headerContainer}>

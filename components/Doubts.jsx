@@ -127,7 +127,7 @@ const Doubts = ({ home, viewDoubt, doubt, user }) => {
 
   // TODO: view a doubt page component
   const ViewDoubt = () => {
-    // console.log(doubt[0]);
+    // console.log("doubt:", doubt[0]);
     const [loggedUser, setLoggedUser] = useState(null);
     const user = useSelector((state) => state.auth.user);
 
@@ -154,27 +154,110 @@ const Doubts = ({ home, viewDoubt, doubt, user }) => {
         // clean up to prevent infinite fetchof user
       };
     }, []);
-    console.log("logged user on view doubt", loggedUser);
+    // console.log("logged user on view doubt", loggedUser);
     const deleteDoubt = async (doubtId) => {
       try {
-        const updatedDoubtsID = loggedUser[0].doubtsID.filter(
-          (id) => id !== doubtId
-        );
-        const userRef = doc(db, "users", loggedUser[0].id);
+        // admin
+        if (loggedUser[0].role === "admin") {
+          const userRef = doc(db, "users", doubt[0].userId);
+          const userDoc = await getDoc(userRef);
 
-        await updateDoc(userRef, { doubtsID: updatedDoubtsID });
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+
+            const updatedDoubtsID = userData.doubtsID.filter(
+              (id) => id !== doubtId
+            );
+            const updatedTotalDoubts = userData.totalDoubts - 1;
+
+            await updateDoc(userRef, {
+              doubtsID: updatedDoubtsID,
+              totalDoubts: updatedTotalDoubts,
+            });
+          }
+        }
+        // user
+        else {
+          const updatedDoubtsID = loggedUser[0].doubtsID.filter(
+            (id) => id !== doubtId
+          );
+          const updatedTotalDoubts = loggedUser[0].totalDoubts - 1;
+
+          const userRef = doc(db, "users", loggedUser[0].id);
+
+          await updateDoc(userRef, {
+            doubtsID: updatedDoubtsID,
+            totalDoubts: updatedTotalDoubts,
+          });
+        }
         const doubtRef = doc(db, "doubts", doubtId);
         await deleteDoc(doubtRef);
 
-        console.log("post deleted");
+        // console.log("post deleted");
         navigation.navigate("Home");
       } catch (error) {
         console.log(error);
       }
     };
+
+    const [solved, setSolved] = useState(doubt[0]?.isSolved);
+
+    const solve = async () => {
+      const correct = !solved;
+      setSolved(correct);
+      const doubtRef = doc(db, "doubts", doubt[0].doubtID);
+      await updateDoc(doubtRef, { isSolved: correct });
+    };
     return (
       <View style={viewdoubtstyles.doubtContainers}>
         <View style={viewdoubtstyles.doubtBox}>
+          {loggedUser && loggedUser[0].role === "admin" && (
+            <Pressable
+              onPress={() => {
+                solve();
+              }}
+            >
+              {doubt && (
+                <View style={viewdoubtstyles.iconContainer}>
+                  {solved ? (
+                    <Icon
+                      name="check-circle"
+                      type="font-awesome"
+                      size={30}
+                      color="green"
+                    />
+                  ) : (
+                    <Icon
+                      name="check-circle"
+                      type="font-awesome"
+                      size={30}
+                      color="grey"
+                    />
+                  )}
+                </View>
+              )}
+            </Pressable>
+          )}
+
+          {loggedUser && loggedUser[0].role === "user" && (
+            <View style={viewdoubtstyles.iconContainer}>
+              {solved ? (
+                <Icon
+                  name="check-circle"
+                  type="font-awesome"
+                  size={30}
+                  color="green"
+                />
+              ) : (
+                <Icon
+                  name="check-circle"
+                  type="font-awesome"
+                  size={30}
+                  color="red"
+                />
+              )}
+            </View>
+          )}
           <View style={viewdoubtstyles.doubtTitleContainer}>
             {doubt && doubt[0].role === "admin" ? (
               <View
@@ -215,7 +298,7 @@ const Doubts = ({ home, viewDoubt, doubt, user }) => {
                 {doubt[0].title}
               </Text>
             )}
-
+            {/* delete */}
             {doubt &&
               loggedUser &&
               (loggedUser[0].role === "admin" ||
