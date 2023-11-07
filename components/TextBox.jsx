@@ -140,7 +140,9 @@ const TextBox = ({ post, user }) => {
 
     if (photo) {
       let savePhoto = async () => {
-        await MediaLibrary.createAssetAsync(photo.uri);
+        await MediaLibrary.createAssetAsync(photo.uri, {
+          saveCopy: true,
+        });
 
         //   firebase upload
         try {
@@ -148,8 +150,15 @@ const TextBox = ({ post, user }) => {
           console.log(assets);
           const savedpicture = assets.assets[0];
 
-          const imageRef = ref(storage, `images/${v4()}.jpg`);
-          await uploadBytes(imageRef, savedpicture.uri);
+          const imageRef = ref(storage, `images/${v4()}.jpeg`);
+          const metadata = {
+            contentType: "image/jpeg",
+          };
+
+          const response = await fetch(photo.uri);
+          const blob = await response.blob();
+
+          await uploadBytes(imageRef, blob, metadata);
           console.log("image uploaded");
           const url = await getDownloadURL(imageRef);
           console.log("Image URL:", url);
@@ -205,7 +214,7 @@ const TextBox = ({ post, user }) => {
           <View style={{ flex: 1 }}>
             <Image
               style={styles.preview}
-              source={{ uri: "data:image/jpg;base64," + photo.base64 }}
+              source={{ uri: "data:image/jpeg;base64," + photo.base64 }}
             />
           </View>
 

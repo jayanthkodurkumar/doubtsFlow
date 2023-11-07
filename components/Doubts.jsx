@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/core";
-import { Icon } from "react-native-elements";
+import { Icon, Image } from "react-native-elements";
 import { useSelector } from "react-redux";
 import {
   arrayRemove,
@@ -59,6 +59,12 @@ const Doubts = ({ home, viewDoubt, doubt, user }) => {
             </View>
           </View>
           <View style={homestyles.doubtContentContainer}>
+            {doubt?.photo && doubt.photo !== null && (
+              <Image
+                style={homestyles.doubtpic}
+                source={{ uri: doubt.photo }}
+              />
+            )}
             <Text style={homestyles.doubtContent} numberOfLines={5}>
               {doubt.doubt}
             </Text>
@@ -122,6 +128,11 @@ const Doubts = ({ home, viewDoubt, doubt, user }) => {
     readmoreText: {
       color: "white",
       fontSize: 18,
+    },
+    doubtpic: {
+      height: 300,
+      marginTop: 10,
+      marginBottom: 20,
     },
   });
 
@@ -207,6 +218,7 @@ const Doubts = ({ home, viewDoubt, doubt, user }) => {
       setSolved(correct);
       const doubtRef = doc(db, "doubts", doubt[0].doubtID);
       await updateDoc(doubtRef, { isSolved: correct });
+      navigation.goBack();
     };
     return (
       <View style={viewdoubtstyles.doubtContainers}>
@@ -336,6 +348,12 @@ const Doubts = ({ home, viewDoubt, doubt, user }) => {
             </View>
           </View>
           <View style={viewdoubtstyles.doubtContentContainer}>
+            {doubt[0]?.photo && doubt[0].photo !== null && (
+              <Image
+                style={viewdoubtstyles.doubtpic}
+                source={{ uri: doubt[0].photo }}
+              />
+            )}
             <Text style={viewdoubtstyles.doubtContent}>{doubt[0].doubt}</Text>
           </View>
         </View>
@@ -394,5 +412,11 @@ const viewdoubtstyles = StyleSheet.create({
     justifyContent: "center",
 
     flex: 0.2,
+  },
+  doubtpic: {
+    height: 500,
+    width: 500,
+    marginTop: 20,
+    marginBottom: 50,
   },
 });
