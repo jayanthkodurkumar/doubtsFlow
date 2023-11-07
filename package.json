@@ -25,6 +25,7 @@
     "expo-mail-composer": "~12.3.0",
     "expo-media-library": "~15.4.1",
     "expo-random": "~13.2.0",
+    "expo-sharing": "^11.7.0",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "expo-system-ui": "~2.4.0",

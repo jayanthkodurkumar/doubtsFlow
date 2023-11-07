@@ -4,6 +4,7 @@ console.warn = function () {};
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -22,8 +23,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore();
+const storage = getStorage(app);
 
-export { auth, db };
+export { auth, db, storage };
 
 //  IOS : 839036897753-os8gnu9uia7fsope321lqrpsf38gcup3.apps.googleusercontent.com
 // android : 839036897753-55mb3m4126npsohqp5b76t8je59ktbcj.apps.googleusercontent.com

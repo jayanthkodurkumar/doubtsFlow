@@ -12,11 +12,14 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
 const TextBox = ({ post, user }) => {
   const userDetails = useSelector((state) => state.auth.user);
+  const navigation = useNavigation();
 
   // console.log("TEXT BOX:", user);
+  const [popup, setPopup] = useState(false);
 
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
@@ -127,7 +130,14 @@ const TextBox = ({ post, user }) => {
             )}
           </View>
           <View style={styles.textFunctionContainer}>
-            <Pressable>
+            <Pressable
+              onPress={() => {
+                setPopup(true);
+                if (popup) {
+                  navigation.navigate("Camera");
+                }
+              }}
+            >
               <Icon name="camera" size={22} color={"#808080"} />
             </Pressable>
 
