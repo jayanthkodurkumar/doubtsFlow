@@ -27,6 +27,8 @@ const HomeScreen = () => {
   const dispatch = useDispatch();
   // TODO: useEffect to fetch user data from users collection
   const [loggedUser, setLoggedUser] = useState(null);
+  const [totalDoubts, setTotalDoubts] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
   useEffect(() => {
     const fetchUsers = async () => {
       // console.log("user from store" + JSON.stringify(user));
@@ -34,6 +36,10 @@ const HomeScreen = () => {
       const uid = user.userId;
       const usersRef = doc(db, "users", uid);
 
+      const querySnapshot = await getDocs(collection(db, "users"));
+
+      const usersSize = querySnapshot.size;
+      setTotalUsers(usersSize);
       const userDoc = await getDoc(usersRef);
 
       if (userDoc.exists()) {
@@ -88,6 +94,8 @@ const HomeScreen = () => {
       querySnapshot.forEach((doc) => {
         data.push(doc.data());
       });
+      const doubtsSize = querySnapshot.size;
+      setTotalDoubts(doubtsSize);
       const sortedData = data.slice().sort((a, b) => {
         const date1 = new Date(a.datePosted);
         const date2 = new Date(b.datePosted);
@@ -103,7 +111,7 @@ const HomeScreen = () => {
     };
   }, []);
   // console.log("db changed:", doubtsArray);
-
+  console.log(totalDoubts + " " + totalUsers);
   // Header Bar
   const Headerbar = () => {
     return (
@@ -144,6 +152,48 @@ const HomeScreen = () => {
         <Headerbar user={loggedUser} />
       </View>
       <ScrollView style={styles.bodyContainer}>
+        {/* User Banner */}
+        {loggedUser && loggedUser?.role == "user" && (
+          <View style={styles.banner}>
+            <View style={styles.banner1}>
+              <View style={styles.totalDoubts}>
+                <View style={styles.stats}>
+                  <Text style={styles.numbers}>{loggedUser?.totalDoubts}</Text>
+                </View>
+              </View>
+              <View style={styles.totalLuddies}>
+                <View style={styles.stats}>
+                  <Text style={styles.numbers}>{loggedUser?.luddies}</Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.banner2}>
+              <Text style={styles.type1}>TOTAL DOUBTS</Text>
+              <Text style={styles.type2}>LUDDIES</Text>
+            </View>
+          </View>
+        )}
+        {/* admin banner */}
+        {loggedUser && loggedUser?.role == "admin" && (
+          <View style={styles.banner}>
+            <View style={styles.banner1}>
+              <View style={styles.totalDoubts}>
+                <View style={styles.stats}>
+                  <Text style={styles.numbers}>{totalUsers}</Text>
+                </View>
+              </View>
+              <View style={styles.totalLuddies}>
+                <View style={styles.stats}>
+                  <Text style={styles.numbers}>{totalDoubts}</Text>
+                </View>
+              </View>
+            </View>
+            <View style={styles.banner2}>
+              <Text style={styles.type1}>TOTAL USERS</Text>
+              <Text style={styles.type2}>DOUBTS</Text>
+            </View>
+          </View>
+        )}
         {/* Conditionally rendering texbox if there is a loggedUser */}
         {loggedUser !== null && <TextBox post={true} user={loggedUser} />}
         {/*  */}
@@ -220,5 +270,81 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 50,
+  },
+  banner: {
+    marginVertical: 30,
+    height: 300,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#EA4335",
+  },
+
+  banner1: {
+    height: 300,
+    width: "100%",
+    backgroundColor: "#EA4335",
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: 20,
+    padding: 5,
+  },
+
+  totalDoubts: {
+    backgroundColor: "white",
+    height: 200,
+    width: 200,
+    flex: 0.5,
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  stats: {
+    backgroundColor: "#EA4335",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 150,
+    width: 150,
+    borderRadius: 75,
+  },
+  numbers: {
+    color: "#FFF",
+    fontSize: 64,
+    fontWeight: "600",
+  },
+  totalLuddies: {
+    backgroundColor: "white",
+    height: 200,
+    width: 200,
+    flex: 0.5,
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  banner2: {
+    backgroundColor: "#EA4335",
+    width: "100%",
+    flexDirection: "row",
+  },
+  type1: {
+    fontSize: 18,
+    fontWeight: "500",
+    color: "white",
+    flex: 1,
+    alignSelf: "flex-start",
+    textAlign: "center",
+    paddingBottom: "5%",
+  },
+  type2: {
+    fontSize: 18,
+    fontWeight: "500",
+    color: "white",
+    flex: 1,
+    alignSelf: "flex-start",
+    textAlign: "center",
   },
 });
