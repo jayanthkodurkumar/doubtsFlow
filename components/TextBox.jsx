@@ -1,4 +1,11 @@
-import { Pressable, StyleSheet, TextInput, View } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  TextInput,
+  Image,
+  Text,
+  View,
+} from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -13,6 +20,14 @@ import {
 } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { Camera } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
+import { Button } from "react-native-elements";
+
+import { storage } from "../firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { v4 } from "uuid";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const TextBox = ({ post, user }) => {
   const userDetails = useSelector((state) => state.auth.user);
@@ -77,6 +92,154 @@ const TextBox = ({ post, user }) => {
     }
   };
 
+  // picture post
+
+  const PicturePost = () => {
+    // camera
+    const cameraRef = useRef();
+    const [hasCameraPermission, setHasCameraPermission] = useState();
+    const [hasMediaLibraryPermission, setHasMediaLibraryPermission] =
+      useState();
+    const [photo, setPhoto] = useState();
+    const [imageUrl, setImageUrl] = useState(null);
+
+    const navigation = useNavigation();
+
+    useEffect(() => {
+      (async () => {
+        const cameraPermission = await Camera.requestCameraPermissionsAsync();
+        const mediaLibraryPermission =
+          await MediaLibrary.requestPermissionsAsync();
+
+        setHasCameraPermission(cameraPermission.status === "granted");
+        setHasMediaLibraryPermission(
+          mediaLibraryPermission.status === "granted"
+        );
+      })();
+    }, []);
+
+    if (hasCameraPermission === undefined) {
+      return <Text>Waiting for a permission to be granted...</Text>;
+    } else if (!hasCameraPermission) {
+      return <Text> Permission not granted...</Text>;
+    }
+
+    const takephoto = async () => {
+      if (!hasCameraPermission) {
+        await Camera.requestCameraPermissionsAsync();
+      }
+      let options = {
+        quality: 1,
+        base64: true,
+        exif: false,
+      };
+
+      let newphoto = await cameraRef.current.takePictureAsync(options);
+      setPhoto(newphoto);
+    };
+
+    if (photo) {
+      let savePhoto = async () => {
+        await MediaLibrary.createAssetAsync(photo.uri);
+
+        //   firebase upload
+        try {
+          const assets = await MediaLibrary.getAssetsAsync({ first: 1 });
+          console.log(assets);
+          const savedpicture = assets.assets[0];
+
+          const imageRef = ref(storage, `images/${v4()}.jpg`);
+          await uploadBytes(imageRef, savedpicture.uri);
+          console.log("image uploaded");
+          const url = await getDownloadURL(imageRef);
+          console.log("Image URL:", url);
+          setImageUrl(url);
+
+          // post the doubt
+
+          const date = new Date();
+          const formattedDate = date.toISOString().split("T")[0];
+
+          const doubtsRef = await addDoc(collection(db, "doubts"), {
+            userId: userDetails.userId,
+            title: title,
+            datePosted: formattedDate,
+            name: userDetails.name,
+            doubt: text,
+            downvotes: 0,
+            upvotes: 0,
+            totalComments: 0,
+            comments: [],
+            role: user.role,
+            isSolved: false,
+            photo: url,
+          });
+          // console.log("Document added with ID: ", doubtsRef.id);
+
+          const addId = {
+            doubtID: doubtsRef.id,
+          };
+
+          await updateDoc(doubtsRef, addId, { merge: true });
+
+          const usersRef = collection(db, "users");
+
+          const userRef = doc(usersRef, userDetails.userId);
+          await updateDoc(userRef, { doubtsID: arrayUnion(doubtsRef.id) });
+          const userDoc = await getDoc(userRef);
+          const userData = userDoc.data();
+          await updateDoc(userRef, { totalDoubts: userData.doubtsID.length });
+
+          setText("");
+          setTitle("");
+
+          textInputRef.current.clear();
+          titleInputRef.current.clear();
+          setPopup(false);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      return (
+        <SafeAreaView style={{ flex: 1 }}>
+          <View style={{ flex: 1 }}>
+            <Image
+              style={styles.preview}
+              source={{ uri: "data:image/jpg;base64," + photo.base64 }}
+            />
+          </View>
+
+          <View style={styles.previewButtonsContainer}>
+            {hasMediaLibraryPermission ? (
+              <Button
+                title="Save"
+                buttonStyle={styles.previewButtons}
+                onPress={savePhoto}
+              />
+            ) : undefined}
+            <Button
+              title="Discard"
+              buttonStyle={styles.previewButtons}
+              onPress={() => setPhoto(undefined)}
+            />
+          </View>
+        </SafeAreaView>
+      );
+    }
+
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <Camera ref={cameraRef} style={styles.cameracontainer}>
+          <View style={styles.camerabutton}>
+            <Pressable style={{ flex: 1 }} onPress={takephoto}>
+              <Icon name="plus-circle" size={42} color={"#EA4335"} />
+            </Pressable>
+          </View>
+        </Camera>
+      </SafeAreaView>
+    );
+  };
+
   return (
     <View style={styles.textContainer}>
       {post && (
@@ -133,9 +296,6 @@ const TextBox = ({ post, user }) => {
             <Pressable
               onPress={() => {
                 setPopup(true);
-                if (popup) {
-                  navigation.navigate("Camera");
-                }
               }}
             >
               <Icon name="camera" size={22} color={"#808080"} />
@@ -144,6 +304,7 @@ const TextBox = ({ post, user }) => {
             <Pressable onPress={addDoubt}>
               <Icon name="plus-circle" size={22} color={"#EA4335"} />
             </Pressable>
+            {popup && <PicturePost />}
           </View>
         </>
       )}
@@ -196,5 +357,29 @@ const styles = StyleSheet.create({
     gap: 20,
     borderTopColor: "black",
     borderTopWidth: 0.5,
+  },
+  cameracontainer: {
+    flex: 1,
+  },
+  camerabutton: {
+    flex: 1,
+    marginTop: "180%",
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  preview: {
+    flex: 1,
+    height: 500,
+  },
+  previewButtonsContainer: {
+    flexDirection: "row",
+    gap: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "black",
+    height: 60,
+  },
+  previewButtons: {
+    backgroundColor: "#EA4335",
   },
 });

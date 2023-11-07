@@ -8,7 +8,6 @@ import SettingsScreen from "./screens/SettingsScreen";
 import ViewDoubtScreen from "./screens/ViewDoubtScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import ViewAccounts from "./screens/ViewAccounts";
-import Photos from "./screens/Photos";
 
 const StackNavigator = () => {
   const Stack = createNativeStackNavigator();
@@ -45,11 +44,6 @@ const StackNavigator = () => {
         <Stack.Screen
           name="Viewaccount"
           component={ViewAccounts}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Camera"
-          component={Photos}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
