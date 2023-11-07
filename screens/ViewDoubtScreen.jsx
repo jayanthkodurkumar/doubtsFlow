@@ -12,7 +12,7 @@ const ViewDoubtScreen = ({ route }) => {
   console.log(doubts);
 
   // Check if doubt is defined before logging
-  console.log("VD", doubts);
+  // console.log("VD", doubts);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={{ flex: 1 }}>

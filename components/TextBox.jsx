@@ -5,6 +5,7 @@ import {
   Image,
   Text,
   View,
+  Alert,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -32,6 +33,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const TextBox = ({ post, user }) => {
   const userDetails = useSelector((state) => state.auth.user);
   const navigation = useNavigation();
+  // console.log(userDetails);
+
+  // get user details from users collection
+  console.log(user);
 
   // console.log("TEXT BOX:", user);
   const [popup, setPopup] = useState(false);
@@ -304,7 +309,14 @@ const TextBox = ({ post, user }) => {
           <View style={styles.textFunctionContainer}>
             <Pressable
               onPress={() => {
-                setPopup(true);
+                if ((user && user.isPremium) || user.role === "admin") {
+                  setPopup(true);
+                } else {
+                  Alert.alert(
+                    "Your are not a Premium User",
+                    "Only premium users can add pictures."
+                  );
+                }
               }}
             >
               <Icon name="camera" size={22} color={"#808080"} />
