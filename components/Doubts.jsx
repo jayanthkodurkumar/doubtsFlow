@@ -265,7 +265,7 @@ const Doubts = ({ home, viewDoubt, doubt, user }) => {
                   name="check-circle"
                   type="font-awesome"
                   size={30}
-                  color="red"
+                  color="grey"
                 />
               )}
             </View>
