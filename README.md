@@ -26,3 +26,6 @@ b) I manually type the following into the info.plist file inside "ios/doubtflow/
 
 c) Any method to automate this issue?
 
+
+
+<img width="1440" alt="Screenshot 2023-11-09 at 12 03 31 PM" src="https://github.com/jayanthkodurkumar/doubtsFlow/assets/83784924/45ffbeec-bd36-48b6-aa7c-e7b828e084b0">
