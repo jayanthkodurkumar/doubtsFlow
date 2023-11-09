@@ -34,15 +34,15 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>exp+doubtsflow</string>
+          <string>com.googleusercontent.apps.1039216558637-7lclgpiqtdjavcr4qqvunhrfdvcrptqt</string>
         </array>
       </dict>
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-            <string>com.googleusercontent.apps.1039216558637-7lclgpiqtdjavcr4qqvunhrfdvcrptqt</string>
+          <string>exp+doubtsflow</string>
         </array>
-</dict>
+      </dict>
     </array>
     <key>CFBundleVersion</key>
     <string>1</string>
