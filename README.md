@@ -7,7 +7,7 @@
 # IOS:
 
 a) Install XCODE app on you macOS.  
-b) Run command "npx expo run:ios" to open on ios emulator.  
+b) Run command "npx expo run:ios" to open on ios emulator (ios 13.0+).  
 
 
 # ANDROID:
