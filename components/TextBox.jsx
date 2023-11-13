@@ -36,7 +36,7 @@ const TextBox = ({ post, user }) => {
   // console.log(userDetails);
 
   // get user details from users collection
-  console.log(user);
+  // console.log(user);
 
   // console.log("TEXT BOX:", user);
   const [popup, setPopup] = useState(false);
@@ -152,7 +152,7 @@ const TextBox = ({ post, user }) => {
         //   firebase upload
         try {
           const assets = await MediaLibrary.getAssetsAsync({ first: 1 });
-          console.log(assets);
+          // console.log(assets);
           const savedpicture = assets.assets[0];
 
           const imageRef = ref(storage, `images/${v4()}.jpeg`);
@@ -164,9 +164,9 @@ const TextBox = ({ post, user }) => {
           const blob = await response.blob();
 
           await uploadBytes(imageRef, blob, metadata);
-          console.log("image uploaded");
+          // console.log("image uploaded");
           const url = await getDownloadURL(imageRef);
-          console.log("Image URL:", url);
+          // console.log("Image URL:", url);
           setImageUrl(url);
 
           // post the doubt

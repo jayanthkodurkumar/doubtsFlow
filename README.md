@@ -14,5 +14,5 @@ b) Run command "npx expo run:ios" to open on ios emulator.
 
 a) Install android studio and open the doubtsflow/android folder using android studio to create locale.properties file.  
 b) Connect your physical device to android studio or create a virtual device on android studio.  
-c) Run command "npx expo run:android" to install the app on your phone/emulator.
+c) Run command "npx expo run:android" to install the app on your phone/emulator.  
 d) Adjust you gradle version inside "android/gradle/wrapper/gradle-wrapper-properties" file (line 3) and your kotlin version inside "android/build.gradle" file (line 9) according to your system specs. You can check the current versions by running "./gradlew --version" inside android folder.
