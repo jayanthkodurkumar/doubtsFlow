@@ -111,7 +111,7 @@ const HomeScreen = () => {
     };
   }, []);
   // console.log("db changed:", doubtsArray);
-  console.log(totalDoubts + " " + totalUsers);
+  // console.log(totalDoubts + " " + totalUsers);
   // Header Bar
   const Headerbar = () => {
     return (

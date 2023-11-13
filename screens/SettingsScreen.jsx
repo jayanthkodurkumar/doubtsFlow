@@ -55,7 +55,7 @@ const SettingsScreen = () => {
     try {
       AsyncStorage.clear();
       signOut(auth);
-      console.log("User signed out");
+      // console.log("User signed out");
       dispatch(logout());
       dispatch(currentuser({}));
       navigation.replace("Login");
@@ -68,7 +68,7 @@ const SettingsScreen = () => {
     // console.log(auth.currentUser);
 
     await auth.currentUser.delete();
-    console.log("accoutn deleted");
+    // console.log("accoutn deleted");
 
     const docId = userDetails.userId;
     const docRef = doc(db, "users", docId);

@@ -57,7 +57,7 @@ const LoginScreen = () => {
       const credential = GoogleAuthProvider.credential(idToken);
 
       signInWithCredential(auth, credential);
-      console.log("auth success");
+      // console.log("auth success");
       //  navigation.navigate("Home");
     } catch (error) {
       console.error("Google Sign-In Error:", error);
@@ -82,7 +82,7 @@ const LoginScreen = () => {
         doubtsID: [],
         id: userId,
       });
-      console.log("Account successfully created!!!");
+      // console.log("Account successfully created!!!");
     }
   };
 
