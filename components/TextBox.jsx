@@ -148,7 +148,6 @@ const TextBox = ({ post, user }) => {
         await MediaLibrary.createAssetAsync(photo.uri, {
           saveCopy: true,
         });
-
         //   firebase upload
         try {
           const assets = await MediaLibrary.getAssetsAsync({ first: 1 });
