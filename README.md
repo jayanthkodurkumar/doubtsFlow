@@ -6,11 +6,12 @@
 
 # IOS:
 
-a) Install XCODE app on you macOS.
-b) Run command "npx expo run:ios" to open on ios emulator.
+a) Install XCODE app on you macOS.  
+b) Run command "npx expo run:ios" to open on ios emulator.  
+
 
 # ANDROID:
 
-a) Install android studio and open the doubtsflow/android folder using android studio to create locale.properties file.
-b) Connect your physical device to android studio or create a virtual device on android studio.
-c)  Run command "npx expo run:android" to install the app on your phone/emulatore.
+a) Install android studio and open the doubtsflow/android folder using android studio to create locale.properties file.  
+b) Connect your physical device to android studio or create a virtual device on android studio.  
+c)  Run command "npx expo run:android" to install the app on your phone/emulator.
