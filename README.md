@@ -31,14 +31,14 @@ The premium version of the app will be running only on physical devices. So to u
 3. https://youtu.be/BDeKTPQzvR4?si=iZPJGR7Hcqdn7XpY
 4. https://www.youtube.com/watch?v=oPTGoJw_Tik&t=2401s
 
-**CAMERA-API**
-5.  https://youtu.be/4WPjWK0MYMI?si=A38tE5EzI540FWr5
+**CAMERA-API**  
+5. https://youtu.be/4WPjWK0MYMI?si=A38tE5EzI540FWr5
 
-**REDUX-PERSIST**
+**REDUX-PERSIST**  
 
 6. https://blog.logrocket.com/persist-state-redux-persist-redux-toolkit-react/
 7. https://youtu.be/b88Z5POQBwI?si=HH2D8getVMcJ4ckS
 
-**ANDROID GRADLE-KOTLIN ISSUE**
-8. https://stackoverflow.com/questions/68597899/bug-exception-in-phase-semantic-analysis-in-source-unit-buildscript-unsup
+**ANDROID GRADLE-KOTLIN ISSUE**  
+8. https://stackoverflow.com/questions/68597899/bug-exception-in-phase-semantic-analysis-in-source-unit-buildscript-unsup  
 9. https://docs.gradle.org/current/userguide/compatibility.html
