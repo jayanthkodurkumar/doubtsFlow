@@ -13,6 +13,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import authReducer from "./reducers/authReducer";
 import userReducer from "./reducers/userReducer";
 
+// SOURCES:
+// learnt to create persistent redux state
+// 1. https://blog.logrocket.com/persist-state-redux-persist-redux-toolkit-react/
+// 2. https://youtu.be/b88Z5POQBwI?si=HH2D8getVMcJ4ckS
+
 const reduxPersistActions = [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER];
 
 const rootReducer = combineReducers({

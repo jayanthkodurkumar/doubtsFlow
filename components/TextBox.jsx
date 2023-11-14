@@ -98,6 +98,9 @@ const TextBox = ({ post, user }) => {
   };
 
   // picture post
+  // SOURCES:
+  // Learnt to use camera api from misscoding youtube channel.
+  // 1. https://youtu.be/4WPjWK0MYMI?si=A38tE5EzI540FWr5
 
   const PicturePost = () => {
     // camera
@@ -225,7 +228,7 @@ const TextBox = ({ post, user }) => {
           <View style={styles.previewButtonsContainer}>
             {hasMediaLibraryPermission ? (
               <Button
-                title="Save"
+                title="Post"
                 buttonStyle={styles.previewButtons}
                 onPress={savePhoto}
               />

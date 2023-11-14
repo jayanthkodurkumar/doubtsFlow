@@ -9,20 +9,22 @@ import {
 } from "firebase/auth";
 import { auth, db } from "../firebase";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import HomeScreen from "./HomeScreen";
 import { SocialIcon } from "react-native-elements";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "../redux/reducers/authReducer";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { useNavigation } from "@react-navigation/native";
-import SettingsScreen from "./SettingsScreen";
 
 const LoginScreen = () => {
   const [userInfo, setUserInfo] = useState();
   const dispatch = useDispatch();
   const navigation = useNavigation();
-
+  // SOURCES:
+  // 1. https://www.youtube.com/watch?v=J9qDaFTP9ao
+  // 2. https://www.youtube.com/watch?v=9YzxZeMjtlY&t=74s
+  // 3. https://youtu.be/BDeKTPQzvR4?si=iZPJGR7Hcqdn7XpY
+  // 4. https://www.youtube.com/watch?v=oPTGoJw_Tik&t=2401s
   useEffect(() => {
     //
     GoogleSignin.configure({
