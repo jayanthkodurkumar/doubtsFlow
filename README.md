@@ -43,5 +43,5 @@ The premium version of the app will be running only on physical devices. So to u
 8. https://stackoverflow.com/questions/68597899/bug-exception-in-phase-semantic-analysis-in-source-unit-buildscript-unsup  
 9. https://docs.gradle.org/current/userguide/compatibility.html  
 
-**FIGMA UI**
+**FIGMA UI**  
 10. https://www.figma.com/file/qvnANkbPV0L8gfftZaFnOJ/DOUBTSFLOW-UI?type=design&node-id=0%3A1&mode=design&t=6rHl3bK151E55eoq-1
