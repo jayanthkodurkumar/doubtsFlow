@@ -26,6 +26,3 @@ const db = getFirestore();
 const storage = getStorage(app);
 
 export { auth, db, storage };
-
-//  IOS : 839036897753-os8gnu9uia7fsope321lqrpsf38gcup3.apps.googleusercontent.com
-// android : 839036897753-55mb3m4126npsohqp5b76t8je59ktbcj.apps.googleusercontent.com
