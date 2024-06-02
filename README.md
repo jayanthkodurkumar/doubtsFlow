@@ -1,11 +1,27 @@
 # DOUBTSFLOW
 
+*DoubtsFlow* is a mobile application designed to simplify and speed up the process of resolving academic doubts, replacing the need for platforms like Discord. The app creates a dedicated space for students to post their questions and receive answers from peers and experts within the community.
+
+## Key Features
+
+#### 1. Post Your Doubts: 
+Students can easily post their academic questions within the app, making it simple to get help.
+#### 2. Community Interaction: 
+Other users can respond to these questions, promoting a collaborative learning environment.
+#### 3. Premium Features:
+Users with premium accounts can enhance their posts with pictures, providing clearer context for their questions.
+#### 4. Admin Controls:
+1. Admins can mark questions as solved or unsolved.
+2. Admins can highlight the best answers by marking comments as correct.
+3. Admins can award points, called luddies, to users for providing helpful answers.
+#### Earn Premium Access: 
+By accumulating luddies, users can unlock premium features without needing to pay.
+
 # Steps to run the app
   1) Run command "npm install" to install all the dependencies
   2) Run command "npx expo prebuild" to build the app.
 
 # IOS:
-
 a) Install XCODE app on you macOS.  
 b) Run command "npx expo run:ios" to open on ios emulator (ios 13.0+).  
 
