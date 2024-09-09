@@ -1,6 +1,6 @@
 # DOUBTSFLOW
 
-*DoubtsFlow* is a mobile application designed to simplify and speed up the process of resolving academic doubts, replacing the need for platforms like Discord. The app creates a dedicated space for students to post their questions and receive answers from peers and experts within the community.
+*DoubtsFlow* is a mobile application designed to simplify and speed up the process of resolving academic doubts. The app creates a dedicated space for students to post their questions and receive answers from peers and experts within the community.
 
 ## Key Features
 
